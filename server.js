@@ -14,11 +14,4 @@ app.get('/update', (_, res) => {
   });
 });
 
-/*
-fetch('/update', {
-    method: 'GET'
-}).then(res => res.json()).then(console.log)
-*/
-
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
-

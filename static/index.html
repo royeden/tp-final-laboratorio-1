@@ -1,12 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Control</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Helvetica', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      justify-content: center;
+      padding: 1rem;
+      width: 100vw;
+    }
+
+    .separator {
+      margin: 1rem 0 2rem 0;
+      min-width: 300px;
+      width: 50%;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Hola</h1>
+  <main class="container">
+    <h1>Panel de control</h1>
+    <hr class="separator">
+    <h2>Medidor de violencia</h2>
+    <h3 id="percentage"></h3>
+    <button id="update">Actualizar</button>
+  </main>
+  <script>
+    (() => {
+      window.username = false;
+      while (!window.username) window.username = prompt("Ingresa el nombre que quieras usar");
+      const percentageNode = document.getElementById('percentage');
+      const updateButtonNode = document.getElementById('update');
+      const formatUpdateResponse = ({ percentage }) => percentageNode.textContent = `Nivel de violencia ${percentage}%`;
+      const loadingMessage = 'Cargando...';
+      const updatePercentage = () => {
+        percentageNode.textContent = loadingMessage;
+        fetch('/update', {
+          method: 'GET'
+        }).then(res => res.json()).then(formatUpdateResponse);
+      }
+      updateButtonNode.addEventListener('click', updatePercentage);
+      // window.updatePercentage = updatePercentage;
+      updatePercentage();
+    })()
+  </script>
 </body>
+
 </html>
