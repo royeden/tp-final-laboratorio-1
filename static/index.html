@@ -14,6 +14,14 @@
       padding: 0;
     }
 
+    button {
+      appearance: none;
+      border: solid 1px gray;
+      border-radius: 4px;
+      font-size: 1.2rem;
+      padding: 0.5rem 2rem;
+    }
+
     .container {
       align-items: center;
       display: flex;
@@ -22,6 +30,14 @@
       justify-content: center;
       padding: 1rem;
       width: 100vw;
+    }
+
+    .controls {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      justify-content: space-around;
+      width: 90vw;
     }
 
     .separator {
@@ -37,15 +53,19 @@
     <h1>Panel de control</h1>
     <hr class="separator">
     <h2>Medidor de violencia</h2>
-    <h3 id="percentage"></h3>
-    <button id="update">Actualizar</button>
+    <h3 id="percentage">Cargando...</h3>
+    <div class="controls">
+      <button id="decrease">Disminuir</button>
+      <button id="increase">Aumentar</button>
+    </div>
   </main>
   <script>
     (() => {
-      window.username = false;
-      while (!window.username) window.username = prompt("Ingresa el nombre que quieras usar");
+      let username = false;
+      while (username) window.username = prompt("Ingresa el nombre que quieras usar");
       const percentageNode = document.getElementById('percentage');
-      const updateButtonNode = document.getElementById('update');
+      const decreaseButtonNode = document.getElementById('decrease');
+      const increaseButtonNode = document.getElementById('increase');
       const formatUpdateResponse = ({ percentage }) => percentageNode.textContent = `Nivel de violencia ${percentage}%`;
       const loadingMessage = 'Cargando...';
       const updatePercentage = () => {
@@ -54,9 +74,24 @@
           method: 'GET'
         }).then(res => res.json()).then(formatUpdateResponse);
       }
-      updateButtonNode.addEventListener('click', updatePercentage);
+      const increasePercentage = () => {
+        fetch('/increase', {
+          method: 'PUT',
+          username
+        }).then(updatePercentage);
+      }
+      increaseButtonNode.addEventListener('click', increasePercentage);
       // window.updatePercentage = updatePercentage;
       updatePercentage();
+      const decreasePercentage = () => {
+        fetch('/decrease', {
+          method: 'PUT',
+          username
+        }).then(updatePercentage);
+      }
+      decreaseButtonNode.addEventListener('click', decreasePercentage);
+      updatePercentage();
+      setInterval(updatePercentage, 1000);
     })()
   </script>
 </body>
