@@ -1,0 +1,38 @@
+* {
+  box-sizing: border-box;
+  font-family: "Helvetica", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  appearance: none;
+  border: solid 1px gray;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  padding: 0.5rem 2rem;
+}
+
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  padding: 1rem;
+  width: 100vw;
+}
+
+.controls {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+  width: 90vw;
+}
+
+.separator {
+  margin: 1rem 0 2rem 0;
+  min-width: 300px;
+  width: 50%;
+}

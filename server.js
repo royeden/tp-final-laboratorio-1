@@ -34,7 +34,6 @@ fs.writeFile(
 );
 
 app.use(bodyParser.json());
-
 app.use(serveStatic('static'));
 
 const handleUpdateRequest = (log, callback) => (req, res) => {
