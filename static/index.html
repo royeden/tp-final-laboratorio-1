@@ -1,99 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Control</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Helvetica', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    button {
-      appearance: none;
-      border: solid 1px gray;
-      border-radius: 4px;
-      font-size: 1.2rem;
-      padding: 0.5rem 2rem;
-    }
-
-    .container {
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      justify-content: center;
-      padding: 1rem;
-      width: 100vw;
-    }
-
-    .controls {
-      align-items: center;
-      display: flex;
-      flex: 1;
-      justify-content: space-around;
-      width: 90vw;
-    }
-
-    .separator {
-      margin: 1rem 0 2rem 0;
-      min-width: 300px;
-      width: 50%;
-    }
-  </style>
-</head>
-
-<body>
-  <main class="container">
-    <h1>Panel de control</h1>
-    <hr class="separator">
-    <h2>Medidor de violencia</h2>
-    <h3 id="percentage">Cargando...</h3>
-    <div class="controls">
-      <button id="decrease">Disminuir</button>
-      <button id="increase">Aumentar</button>
-    </div>
-  </main>
-  <script>
-    (() => {
-      let username = false;
-      while (username) window.username = prompt("Ingresa el nombre que quieras usar");
-      const percentageNode = document.getElementById('percentage');
-      const decreaseButtonNode = document.getElementById('decrease');
-      const increaseButtonNode = document.getElementById('increase');
-      const formatUpdateResponse = ({ percentage }) => percentageNode.textContent = `Nivel de violencia ${percentage}%`;
-      const loadingMessage = 'Cargando...';
-      const updatePercentage = () => {
-        percentageNode.textContent = loadingMessage;
-        fetch('/update', {
-          method: 'GET'
-        }).then(res => res.json()).then(formatUpdateResponse);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Control</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Helvetica", sans-serif;
+        margin: 0;
+        padding: 0;
       }
-      const increasePercentage = () => {
-        fetch('/increase', {
-          method: 'PUT',
-          username
-        }).then(updatePercentage);
-      }
-      increaseButtonNode.addEventListener('click', increasePercentage);
-      // window.updatePercentage = updatePercentage;
-      updatePercentage();
-      const decreasePercentage = () => {
-        fetch('/decrease', {
-          method: 'PUT',
-          username
-        }).then(updatePercentage);
-      }
-      decreaseButtonNode.addEventListener('click', decreasePercentage);
-      updatePercentage();
-      setInterval(updatePercentage, 1000);
-    })()
-  </script>
-</body>
 
+      button {
+        appearance: none;
+        border: solid 1px gray;
+        border-radius: 4px;
+        font-size: 1.2rem;
+        padding: 0.5rem 2rem;
+      }
+
+      .container {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        justify-content: center;
+        padding: 1rem;
+        width: 100vw;
+      }
+
+      .controls {
+        align-items: center;
+        display: flex;
+        flex: 1;
+        justify-content: space-around;
+        width: 90vw;
+      }
+
+      .separator {
+        margin: 1rem 0 2rem 0;
+        min-width: 300px;
+        width: 50%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="container">
+      <h1>Panel de control</h1>
+      <hr class="separator" />
+      <h2>Medidor de violencia</h2>
+      <h3 id="percentage">Cargando...</h3>
+      <div class="controls">
+        <button id="decrease">Disminuir</button>
+        <button id="increase">Aumentar</button>
+      </div>
+    </main>
+    <script>
+      (() => {
+        let interval;
+        let username = false;
+
+        while (!username)
+          username = prompt("Ingresa el nombre que quieras usar");
+
+        const getUserId = () =>
+          fetch("/id", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              username
+            })
+          })
+            .then(res => res.json())
+            .then(({ user_id: id }) => (username = `${id}_${username}`));
+        getUserId();
+
+        const percentageNode = document.getElementById("percentage");
+        const decreaseButtonNode = document.getElementById("decrease");
+        const increaseButtonNode = document.getElementById("increase");
+
+        const formatUpdateResponse = ({ percentage }) =>
+          (percentageNode.textContent = `Nivel de violencia ${percentage}%`);
+
+        const updatePercentage = () => {
+          percentageNode.textContent = "Cargando...";
+          fetch("/update", {
+            method: "GET"
+          })
+            .then(res => res.json())
+            .then(formatUpdateResponse);
+        };
+
+        const increasePercentage = () => {
+          fetch("/increase", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              username
+            })
+          }).then(updatePercentage);
+        };
+        increaseButtonNode.addEventListener("click", increasePercentage);
+
+        const decreasePercentage = () => {
+          fetch("/decrease", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              username
+            })
+          }).then(updatePercentage);
+        };
+        decreaseButtonNode.addEventListener("click", decreasePercentage);
+
+        setInterval(updatePercentage, 1000);
+      })();
+    </script>
+  </body>
 </html>
