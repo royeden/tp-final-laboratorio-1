@@ -3,6 +3,8 @@ const express = require('express');
 const fs = require('fs');
 const serveStatic = require('serve-static');
 
+const { config } = require('./config');
+
 const app = express();
 
 let percentage = 0;
@@ -74,4 +76,4 @@ app.put('/decrease', (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+app.listen(config.port, () => console.log('Example app listening on port 3000!'));
