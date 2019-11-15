@@ -1,8 +1,21 @@
+const html = {
+  thresholds: [10]
+};
+
 const en = {
   boundaries: {
     max: ', but percentage is at max!',
     min: ', but percentage is at min!',
     fallback: '!'
+  },
+  html: {
+    decrease: 'Decrease',
+    description: 'Violence meter:',
+    increase: 'Increase',
+    loading: 'Loading...',
+    prompt: 'Enter your desired name:',
+    response: 'Violence level:',
+    title: 'Control panel'
   },
   initialMessage: port => `Initiated server in port ${port}!`,
   logSaved: 'Updated log!',
@@ -21,6 +34,15 @@ const es = {
     min: ', pero el porcentaje está al mínimo!',
     fallback: '!'
   },
+  html: {
+    decrease: 'Disminuir',
+    description: 'Medidor de violencia:',
+    increase: 'Aumentar',
+    loading: 'Cargando...',
+    prompt: 'Ingresa el nombre que quieras usar:',
+    response: 'Nivel de violencia:',
+    title: 'Panel de control'
+  },
   initialMessage: port => `¡Servidor iniciado en el puerto ${port}!`,
   logSaved: '¡Datos actualizados!',
   percentageIsAt: percentage => `El porcentaje está al ${percentage}%`,
@@ -38,5 +60,8 @@ exports.config = {
   strings: {
     en,
     es
+  },
+  values: {
+    html
   }
 };

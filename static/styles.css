@@ -1,6 +1,16 @@
+@font-face {
+  font-family: 'Roboto Mono';
+  src: url('Roboto_Mono/RobotoMono-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('Montserrat/Montserrat-Regular.ttf');
+}
+
 * {
   box-sizing: border-box;
-  font-family: "Helvetica", sans-serif;
+  font-family: 'Roboto Mono', sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -9,6 +19,8 @@ button {
   appearance: none;
   border: solid 1px gray;
   border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.2rem;
   padding: 0.5rem 2rem;
 }
@@ -20,6 +32,7 @@ button {
   height: 100vh;
   justify-content: center;
   padding: 1rem;
+  text-align: center;
   width: 100vw;
 }
 

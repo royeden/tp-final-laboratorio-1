@@ -1,58 +1,55 @@
 (() => {
   let username = false;
 
-  while (!username)
-    username = prompt("Ingresa el nombre que quieras usar");
+  while (!username) username = prompt(window.promptMessage);
+
+  const makeUpdateRequestBody = () => ({
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username
+    })
+  });
 
   const getUserId = () =>
-    fetch("/id", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username
-      })
+    fetch('/id', {
+      method: 'POST',
+      ...makeUpdateRequestBody()
     })
       .then(res => res.json())
       .then(({ user_id: id }) => (username = `${id}_${username}`));
+
   getUserId();
 
-  const percentageNode = document.getElementById("percentage");
-  const decreaseButtonNode = document.getElementById("decrease");
-  const increaseButtonNode = document.getElementById("increase");
+  const percentageNode = document.getElementById('percentage');
+  const decreaseButtonNode = document.getElementById('decrease');
+  const increaseButtonNode = document.getElementById('increase');
 
   const formatUpdateResponse = ({ percentage }) =>
-    (percentageNode.textContent = `Nivel de violencia ${percentage}%`);
+    (percentageNode.textContent = `${window.responseMessage} ${percentage}%`);
 
   const updatePercentage = () => {
-    percentageNode.textContent = "Cargando...";
-    fetch("/update", {
-      method: "GET"
+    fetch('/update', {
+      method: 'GET'
     })
       .then(res => res.json())
       .then(formatUpdateResponse);
   };
 
   const increasePercentage = () => {
-    fetch("/increase", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username
-      })
+    fetch('/increase', {
+      method: 'PUT',
+      ...makeUpdateRequestBody()
     }).then(updatePercentage);
   };
-  increaseButtonNode.addEventListener("click", increasePercentage);
+  increaseButtonNode.addEventListener('click', increasePercentage);
 
   const decreasePercentage = () => {
-    fetch("/decrease", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username
-      })
+    fetch('/decrease', {
+      method: 'PUT',
+      ...makeUpdateRequestBody()
     }).then(updatePercentage);
   };
-  decreaseButtonNode.addEventListener("click", decreasePercentage);
+  decreaseButtonNode.addEventListener('click', decreasePercentage);
 
   setInterval(updatePercentage, 1000);
 })();

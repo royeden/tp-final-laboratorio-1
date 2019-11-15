@@ -4,13 +4,12 @@ const bodyParser = require('body-parser');
 const chalk = require('chalk');
 const express = require('express');
 const fs = require('fs');
-const serveStatic = require('serve-static');
 
 const { config } = require('./config');
 
 const { LANGUAGE_CONFIG } = process.env;
 
-const { port, strings: configStrings } = config;
+const { port, strings: configStrings, values } = config;
 
 const strings = configStrings[LANGUAGE_CONFIG.toLowerCase()];
 
@@ -33,8 +32,13 @@ fs.writeFile(
   fsCallback
 );
 
+
 app.use(bodyParser.json());
-app.use(serveStatic('static'));
+app.use(express.static('static'));
+app.set('view engine', 'ejs');
+app.get('/', function (req, res) {
+  res.render('index', { ...strings.html, values: values.html })
+})
 
 const handleUpdateRequest = (log, callback) => (req, res) => {
   const username = req.body.username;
