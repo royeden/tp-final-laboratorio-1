@@ -20,12 +20,56 @@
 
   getUserId();
 
+  const hiddenImageNode = document.getElementById('hidden_image');
   const percentageNode = document.getElementById('percentage');
   const decreaseButtonNode = document.getElementById('decrease');
   const increaseButtonNode = document.getElementById('increase');
 
-  const formatUpdateResponse = ({ percentage }) =>
-    (percentageNode.textContent = `${window.responseMessage} ${percentage}%`);
+  let hiddenImagesTimer = null;
+  let hiddenImagesTimerFinished = false;
+  let activateHiddenImages = false;
+  let thresholdIndex = 0;
+
+  const createTimeout = index => {
+    const timeout =
+      (Math.floor(Math.random() * 1000) + 1) * 5 * window.thresholds[index];
+    hiddenImagesTimer = setTimeout(() => {
+      hiddenImagesTimerFinished = true;
+      hiddenImageNode.src =
+        window.images[Math.floor(Math.random() * window.images.length)];
+      hiddenImageNode.style.display = 'block';
+      setTimeout(() => (hiddenImageNode.style.display = 'none'), 50);
+    }, timeout);
+    console.log(timeout / 1000);
+  };
+
+  const formatUpdateResponse = ({ percentage }) => {
+    const prevActivateHiddenImages = activateHiddenImages;
+    const prevThresholdIndex = thresholdIndex;
+    thresholdIndex = percentage ? Math.floor((percentage - 1) / 20) : 0;
+    percentageNode.textContent = `${window.responseMessage} ${percentage}%`;
+    if (!activateHiddenImages) {
+      if (!prevActivateHiddenImages && thresholdIndex) {
+        activateHiddenImages = true;
+        createTimeout(thresholdIndex);
+      }
+    } else {
+      if (!thresholdIndex) {
+        activateHiddenImages = false;
+        hiddenImagesTimerFinished = false;
+        clearTimeout(hiddenImagesTimer);
+        hiddenImagesTimer = null;
+      }
+      if (hiddenImagesTimerFinished) {
+        hiddenImagesTimerFinished = false;
+        if (thresholdIndex) createTimeout(thresholdIndex);
+      }
+      if (thresholdIndex !== prevThresholdIndex) {
+        clearTimeout(hiddenImagesTimer);
+        if (thresholdIndex) createTimeout(thresholdIndex);
+      }
+    }
+  };
 
   const updatePercentage = () => {
     fetch('/update', {
@@ -39,7 +83,7 @@
     fetch('/increase', {
       method: 'PUT',
       ...makeUpdateRequestBody()
-    }).then(updatePercentage);
+    });
   };
   increaseButtonNode.addEventListener('click', increasePercentage);
 
@@ -47,9 +91,14 @@
     fetch('/decrease', {
       method: 'PUT',
       ...makeUpdateRequestBody()
-    }).then(updatePercentage);
+    });
   };
   decreaseButtonNode.addEventListener('click', decreasePercentage);
 
   setInterval(updatePercentage, 1000);
+
+  window.thresholds = window.thresholds
+    .split(',')
+    .map(threshold => parseInt(threshold, 10));
+  window.images = window.images.split(',');
 })();

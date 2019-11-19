@@ -31,22 +31,23 @@ void useTimer () {
 
 void useFilter() {
   int appliedFilter = floor(map(percentage, 0, 100, 0, 4));
-  filter(f[appliedFilter]);
+  if (f[appliedFilter] == POSTERIZE) {
+    filter(f[appliedFilter], random(2, 15));
+  } else {
+    filter(f[appliedFilter]);
+  }
 }
 
 void setup() {
   fullScreen(2);
-  i = loadImage("download.jpeg");
+  i = loadImage("download.jpg");
 }
 
 void draw() {
   useTimer();
+  image(i, 0, 0, width, height);
   pushMatrix();
-    translate(width / 2 - i.width / 2 * 4, height/ 2 - i.height / 2 * 4);
-    scale(4);
-    image(i, 0, 0);
     useFilter();
-    // filter(THRESHOLD);
   popMatrix();
 }
 

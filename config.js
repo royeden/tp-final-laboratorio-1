@@ -1,5 +1,6 @@
 const html = {
-  thresholds: [10]
+  images: ['download.jpeg'],
+  thresholds: [0, 10, 7, 3, 1]
 };
 
 const en = {
