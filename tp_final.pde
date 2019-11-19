@@ -16,7 +16,7 @@ int[] f = {
 // float timeNoiseChange = 0.013;
 
 // change next line
-GetRequest getPercentage = new GetRequest("http://192.168.0.7:3000/update");
+GetRequest getPercentage = new GetRequest("192.168.1.128:3000/update");
 JSONObject percentageResponse;
 
 int timer = millis();

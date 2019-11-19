@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
 const express = require('express');
@@ -7,11 +5,9 @@ const fs = require('fs');
 
 const { config } = require('./config');
 
-const { LANGUAGE_CONFIG } = process.env;
+const { language, port, strings: configStrings, values } = config;
 
-const { port, strings: configStrings, values } = config;
-
-const strings = configStrings[LANGUAGE_CONFIG.toLowerCase()];
+const strings = configStrings[language];
 
 const app = express();
 

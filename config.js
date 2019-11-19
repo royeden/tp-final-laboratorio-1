@@ -1,3 +1,15 @@
+const port = 3000;
+
+const language = "es";
+
+const patch = {
+  local_ip: "1.128",
+  local_url: "/update",
+  regex: "\/\/ change next line",
+  raw_regex: "// change next line",
+  replacement: url => `GetRequest getPercentage = new GetRequest("${url}");`
+}
+
 const html = {
   images: ['download.jpeg'],
   thresholds: [0, 10, 7, 3, 1]
@@ -48,7 +60,7 @@ const es = {
   logSaved: '¡Datos actualizados!',
   percentageIsAt: percentage => `El porcentaje está al ${percentage}%`,
   receivedRequest: (type, from) =>
-  `¡Recibido pedido de ${type} realizado por ${from}`,
+    `¡Recibido pedido de ${type} realizado por ${from}`,
   registeredUser: (id, username) => `Se registró el usuario ${id}_${username}`,
   types: {
     decrease: 'disminuir',
@@ -57,7 +69,9 @@ const es = {
 };
 
 exports.config = {
-  port: 3000,
+  language,
+  patch,
+  port,
   strings: {
     en,
     es
