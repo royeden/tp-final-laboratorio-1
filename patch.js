@@ -22,12 +22,10 @@ try {
         if (error) {
           throw new Error(error);
         }
-        const regex = new RegExp(`${patch.regex}\\n[^\\n]*`, 'g');
         const result = data.replace(
-          regex,
-          `${patch.raw_regex}\n${patch.replacement(`192.168.${patch.local_ip}:${port}${patch.local_url}`)}`
+          patch.regex,
+          `${patch.raw_regex}\n${patch.replacement(`http://192.168.${patch.local_ip}:${port}${patch.local_url}`)}`
         );
-
         fs.writeFile(file, result, 'utf8', e => {
           if (e) throw new Error(e);
         });

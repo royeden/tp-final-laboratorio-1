@@ -5,7 +5,7 @@ const language = "es";
 const patch = {
   local_ip: "1.128",
   local_url: "/update",
-  regex: "\/\/ change next line",
+  regex: /\/\/ change next line\n[^\n]*/g,
   raw_regex: "// change next line",
   replacement: url => `GetRequest getPercentage = new GetRequest("${url}");`
 }

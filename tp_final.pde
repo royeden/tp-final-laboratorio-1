@@ -16,7 +16,7 @@ int[] f = {
 // float timeNoiseChange = 0.013;
 
 // change next line
-GetRequest getPercentage = new GetRequest("192.168.1.128:3000/update");
+GetRequest getPercentage = new GetRequest("http://192.168.1.128:3000/update");
 JSONObject percentageResponse;
 
 int timer = millis();
@@ -62,9 +62,10 @@ void setup() {
   background(255);
   // fullScreen(2);
   fullScreen();
-  img = loadImage("download.jpg");
-  imageMode(CENTER);
-  image(img, width / 2, height / 2);
+  img = loadImage("IMG_4156.JPG");
+  // imageMode(CENTER);
+  // image(img, width / 2, height / 2, width, height);
+  image(img, 0, 0, width, height);
 }
 
 void draw() {
