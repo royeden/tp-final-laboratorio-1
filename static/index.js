@@ -1,7 +1,6 @@
 (() => {
-  let username = false;
-
-  while (!username) username = prompt(window.promptMessage);
+  const hadUserStored = !!localStorage.getItem('user');
+  let username = localStorage.getItem('user');
 
   const makeUpdateRequestBody = () => ({
     headers: { 'Content-Type': 'application/json' },
@@ -10,15 +9,20 @@
     })
   });
 
-  const getUserId = () =>
-    fetch('/id', {
-      method: 'POST',
-      ...makeUpdateRequestBody()
-    })
-      .then(res => res.json())
-      .then(({ user_id: id }) => (username = `${id}_${username}`));
-
-  getUserId();
+  if (!hadUserStored) {
+    while (!username) username = prompt(window.promptMessage);
+  
+    const getUserId = () =>
+      fetch('/id', {
+        method: 'POST',
+        ...makeUpdateRequestBody()
+      })
+        .then(res => res.json())
+        .then(({ user_id: id }) => (username = `${id}_${username}`))
+        .then(userdata => localStorage.setItem('user', userdata));
+  
+    getUserId();
+  }
 
   const hiddenImageNode = document.getElementById('hidden_image');
   const percentageNode = document.getElementById('percentage');
@@ -31,7 +35,7 @@
   let thresholdIndex = 0;
 
   const createTimeout = index => {
-    const timeout =
+    const tempTimeout =
       (Math.floor(Math.random() * 1000) + 1) * 5 * window.thresholds[index];
     hiddenImagesTimer = setTimeout(() => {
       hiddenImagesTimerFinished = true;
@@ -39,8 +43,8 @@
         window.images[Math.floor(Math.random() * window.images.length)];
       hiddenImageNode.style.display = 'block';
       setTimeout(() => (hiddenImageNode.style.display = 'none'), 50);
-    }, timeout);
-    console.log(timeout / 1000);
+    }, tempTimeout);
+    console.log(tempTimeout / 1000);
   };
 
   const formatUpdateResponse = ({ percentage }) => {
