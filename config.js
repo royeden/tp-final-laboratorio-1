@@ -1,6 +1,5 @@
 const port = 3000;
-const timeout = 10000;
-// const timeout = 180000;
+const timeout = 180000;
 
 const language = 'es';
 
