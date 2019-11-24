@@ -32,7 +32,7 @@ const en = {
     final_like: "I didn't like it",
     like: 'Like',
     loading: 'Loading...',
-    prompt: 'Enter your desired name:',
+    prompt: 'Enter your desired name (letters, number and underscores are valid):',
     response: 'Violence level:',
     title: 'Control panel'
   },
@@ -62,7 +62,7 @@ const es = {
     final_like: '¡Me gustó!',
     like: 'Me gusta',
     loading: 'Cargando...',
-    prompt: 'Ingresa el nombre que quieras usar:',
+    prompt: 'Ingresa el nombre que quieras usar (son válidas letras, números y guiones bajos):',
     response: 'Nivel de violencia:',
     title: 'Panel de control'
   },
