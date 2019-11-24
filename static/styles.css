@@ -20,9 +20,12 @@ button {
   border: solid 1px gray;
   border-radius: 4px;
   cursor: pointer;
+  flex: 1;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
+  font-size: 0.85rem;
+  max-width: 178px;
   padding: 0.5rem 2rem;
+  text-align: center;
 }
 
 .image {
@@ -47,9 +50,17 @@ button {
 .controls {
   align-items: center;
   display: flex;
+  flex-direction: column;
   flex: 1;
   justify-content: space-around;
-  width: 90vw;
+  width: 100%;
+}
+
+.controls_buttons {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .display {
@@ -64,4 +75,54 @@ button {
   margin: 1rem 0 2rem 0;
   min-width: 300px;
   width: 50%;
+}
+
+.timeout {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.timeout_modal {
+  align-items: center;
+  background-color: #ffffff77;
+  height: 100vh;
+  justify-content: center;
+  position: absolute;
+  transition: opacity 4s ease-in-out;
+  width: 100vw;
+}
+
+.timeout_modal--hidden {
+  display: none;
+  opacity: 0;
+}
+
+@keyframes modal_visible {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.timeout_modal--show {
+  animation: modal_visible 0.4s ease-in-out;
+}
+
+.timeout_modal--visible {
+  display: flex;
+}
+
+.timeout_modal_body {
+  background-color: #ffffff;
+  border: #000 solid 1px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  min-height: 30%;
+  padding: 1rem 0.5rem;
+  width: 90%;
 }

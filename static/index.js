@@ -2,6 +2,14 @@
   const hadUserStored = !!localStorage.getItem('user');
   let username = localStorage.getItem('user');
 
+  const percentageNode = document.getElementById('percentage');
+  const decreaseButtonNode = document.getElementById('decrease');
+  const increaseButtonNode = document.getElementById('increase');
+  const dislikeButtonNode = document.getElementById('dislike');
+  const likeButtonNode = document.getElementById('like');
+  const finalDislikeButtonNode = document.getElementById('dislike');
+  const finalLikeButtonNode = document.getElementById('like');
+
   const makeUpdateRequestBody = () => ({
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -11,7 +19,7 @@
 
   if (!hadUserStored) {
     while (!username) username = prompt(window.promptMessage);
-  
+
     const getUserId = () =>
       fetch('/id', {
         method: 'POST',
@@ -20,59 +28,38 @@
         .then(res => res.json())
         .then(({ user_id: id }) => (username = `${id}_${username}`))
         .then(userdata => localStorage.setItem('user', userdata));
-  
+
     getUserId();
   }
 
-  const hiddenImageNode = document.getElementById('hidden_image');
-  const percentageNode = document.getElementById('percentage');
-  const decreaseButtonNode = document.getElementById('decrease');
-  const increaseButtonNode = document.getElementById('increase');
-
-  let hiddenImagesTimer = null;
-  let hiddenImagesTimerFinished = false;
-  let activateHiddenImages = false;
-  let thresholdIndex = 0;
-
-  const createTimeout = index => {
-    const tempTimeout =
-      (Math.floor(Math.random() * 1000) + 1) * 5 * window.thresholds[index];
-    hiddenImagesTimer = setTimeout(() => {
-      hiddenImagesTimerFinished = true;
-      hiddenImageNode.src =
-        window.images[Math.floor(Math.random() * window.images.length)];
-      hiddenImageNode.style.display = 'block';
-      setTimeout(() => (hiddenImageNode.style.display = 'none'), 50);
-    }, tempTimeout);
-    console.log(tempTimeout / 1000);
-  };
+  if (window.timeout) {
+    let localTimeout = localStorage.getItem('timeout');
+    const timeoutNode = document.getElementById('timeout');
+    if (localTimeout !== '0') {
+      localTimeout = parseInt(localTimeout || window.timeout, 10);
+      timeoutNode.textContent = `${Math.floor(localTimeout / 1000)}s`;
+      document.getElementById('timeout_modal').className =
+        'timeout_modal timeout_modal--hidden';
+      const clockInterval = setInterval(() => {
+        if (localTimeout > 0) localTimeout -= 1000;
+        localStorage.setItem('timeout', localTimeout);
+        timeoutNode.textContent = `${Math.floor(localTimeout / 1000)}s`;
+      }, 1000);
+      setTimeout(() => {
+        clearInterval(clockInterval);
+        document.getElementById('timeout_modal').className =
+          'timeout_modal timeout_modal--visible timeout_modal--show';
+      }, localTimeout + 1000);
+    } else {
+      document.getElementById('timeout_modal').className =
+        'timeout_modal timeout_modal--visible';
+      timeoutNode.textContent = '0s';
+    }
+  }
 
   const formatUpdateResponse = ({ percentage }) => {
-    const prevActivateHiddenImages = activateHiddenImages;
-    const prevThresholdIndex = thresholdIndex;
-    thresholdIndex = percentage ? Math.floor((percentage - 1) / 20) : 0;
     percentageNode.textContent = `${window.responseMessage} ${percentage}%`;
-    if (!activateHiddenImages) {
-      if (!prevActivateHiddenImages && thresholdIndex) {
-        activateHiddenImages = true;
-        createTimeout(thresholdIndex);
-      }
-    } else {
-      if (!thresholdIndex) {
-        activateHiddenImages = false;
-        hiddenImagesTimerFinished = false;
-        clearTimeout(hiddenImagesTimer);
-        hiddenImagesTimer = null;
-      }
-      if (hiddenImagesTimerFinished) {
-        hiddenImagesTimerFinished = false;
-        if (thresholdIndex) createTimeout(thresholdIndex);
-      }
-      if (thresholdIndex !== prevThresholdIndex) {
-        clearTimeout(hiddenImagesTimer);
-        if (thresholdIndex) createTimeout(thresholdIndex);
-      }
-    }
+    window.handleHiddenImages(percentage)
   };
 
   const updatePercentage = () => {

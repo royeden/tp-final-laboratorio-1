@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const { config } = require('./config');
 
-const { language, port, strings: configStrings, values } = config;
+const { language, port, strings: configStrings, timeout, values } = config;
 
 const strings = configStrings[language];
 
@@ -50,7 +50,15 @@ app.use(bodyParser.json());
 app.use(express.static('static'));
 app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
-  res.render('index', { ...strings.html, values: values.html });
+  res.render('index', { ...strings.html, timeout: 0, values: values.html });
+});
+
+app.get('/timeout', function(req, res) {
+  res.render('index', { ...strings.html, timeout, values: values.html });
+});
+
+app.get('/admin', function(req, res) {
+  res.render('admin', { ...strings.html, timeout: 0, values: values.html });
 });
 
 const handleUpdateRequest = (log, callback) => (req, res) => {

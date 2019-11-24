@@ -1,14 +1,16 @@
 const port = 3000;
+const timeout = 10000;
+// const timeout = 180000;
 
-const language = "es";
+const language = 'es';
 
 const patch = {
-  local_ip: "1.128",
-  local_url: "/update",
+  local_ip: '1.128',
+  local_url: '/update',
   regex: /\/\/ change next line\n[^\n]*/g,
-  raw_regex: "// change next line",
+  raw_regex: '// change next line',
   replacement: url => `GetRequest getPercentage = new GetRequest("${url}");`
-}
+};
 
 const html = {
   images: ['download.jpeg'],
@@ -24,7 +26,11 @@ const en = {
   html: {
     decrease: 'Decrease',
     description: 'Violence meter:',
+    dislike: 'Dislike',
     increase: 'Increase',
+    final_dislike: 'I liked it!',
+    final_like: "I didn't like it",
+    like: 'Like',
     loading: 'Loading...',
     prompt: 'Enter your desired name:',
     response: 'Violence level:',
@@ -50,7 +56,11 @@ const es = {
   html: {
     decrease: 'Disminuir',
     description: 'Medidor de violencia:',
+    dislike: 'No me gusta',
     increase: 'Aumentar',
+    final_dislike: '¡No me gustó!',
+    final_like: '¡Me gustó!',
+    like: 'Me gusta',
     loading: 'Cargando...',
     prompt: 'Ingresa el nombre que quieras usar:',
     response: 'Nivel de violencia:',
@@ -76,6 +86,7 @@ exports.config = {
     en,
     es
   },
+  timeout,
   values: {
     html
   }
