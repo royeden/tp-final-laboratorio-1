@@ -23,7 +23,7 @@
     console.log(tempTimeout / 1000);
   };
 
-  window.handleHiddenImages = ({ percentage }) => {
+  window.handleHiddenImages = percentage => {
     const prevActivateHiddenImages = activateHiddenImages;
     const prevThresholdIndex = thresholdIndex;
     thresholdIndex = percentage ? Math.floor((percentage - 1) / 20) : 0;
