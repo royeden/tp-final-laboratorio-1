@@ -18,7 +18,7 @@
       hiddenImageNode.src =
         window.images[Math.floor(Math.random() * window.images.length)];
       hiddenImageNode.style.display = 'block';
-      setTimeout(() => (hiddenImageNode.style.display = 'none'), 50);
+      setTimeout(() => (hiddenImageNode.style.display = 'none'), 100);
     }, tempTimeout);
     console.log(tempTimeout / 1000);
   };

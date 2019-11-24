@@ -12,7 +12,7 @@ const patch = {
 };
 
 const html = {
-  images: ['download.jpeg'],
+  images: [...Array(12)].map((_, i) => `images/${i + 1}.png`),
   thresholds: [0, 10, 7, 3, 1]
 };
 
