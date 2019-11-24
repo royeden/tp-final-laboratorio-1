@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'Roboto Mono';
-  src: url('Roboto_Mono/RobotoMono-Regular.ttf');
+  src: url('fonts/RobotoMono-Regular.ttf');
 }
 
 @font-face {
   font-family: 'Montserrat';
-  src: url('Montserrat/Montserrat-Regular.ttf');
+  src: url('fonts/Montserrat-Regular.ttf');
 }
 
 * {

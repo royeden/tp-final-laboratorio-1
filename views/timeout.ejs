@@ -1,0 +1,17 @@
+<% if (timeout) { %>
+  <div class="timeout">
+    <h3 id="timeout"><%= loading %></h3>
+  </div>
+  <div id="timeout_modal" class="timeout_modal timeout_modal--hidden">
+    <div class="timeout_modal_body">
+      <h2 id="timeout_modal_title">¡Se acabo tu tiempo!</h2>
+      <div class="controls">
+        <h3 id="timeout_modal_subtitle">¿Que tal tu experiencia?</h3>
+        <div class="controls_buttons">
+          <button id="final_dislike"><%= final_dislike %></button>
+          <button id="final_like"><%= final_like %></button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% } %>

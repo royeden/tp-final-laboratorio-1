@@ -1,71 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title id="title"><%= title %></title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+  <%- include('head'); -%>
   <body>
     <img id="hidden_image" style="display: none;" src="" alt="test" class="image">
     <main class="container">
-      <div class="display">
-        <h1><%= title %></h1>
-        <hr class="separator" />
-        <h2><%= description %></h2>
-        <h3 id="percentage"><%= loading %></h3>
-      </div>
-      <% if (timeout !== 0) { %>
-        <div class="controls">
-          <h3>Control de violencia</h3>
-          <div class="controls_buttons">
-            <button id="decrease"><%= decrease %></button>
-            <button id="increase"><%= increase %></button>
-          </div>
-        </div>
-      <% } %>
-      <div class="controls">
-        <h3>¿Te gusta lo que ves?</h3>
-        <div class="controls_buttons">
-          <button id="dislike"><%= dislike %></button>
-          <button id="like"><%= like %></button>
-        </div>
-      </div>
-      <% if (timeout) { %>
-        <div class="timeout">
-          <h3 id="timeout"><%= loading %></h3>
-        </div>
-        <div id="timeout_modal" class="timeout_modal timeout_modal--hidden">
-          <div class="timeout_modal_body">
-            <h2 id="timeout_modal_title">¡Se acabo tu tiempo!</h2>
-            <div class="controls">
-              <h3 id="timeout_modal_subtitle">¿Que tal tu experiencia?</h3>
-              <div class="controls_buttons">
-                <button id="final_dislike"><%= final_dislike %></button>
-                <button id="final_like"><%= final_like %></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% } %>
+      <%- include('display'); -%>
+      <%- include('percentage_controls'); -%>
+      <%- include('like'); -%>
+      <%- include('timeout'); -%>
     </main>
-    <script>
-      (() => {
-        window.promptMessage = "<%= prompt %>";
-        window.responseMessage = "<%= response %>";
-        window.thresholds = "<%= values.thresholds %>";
-        window.images = "<%= values.images %>";
-        window.timeout = parseInt("<%= timeout %>", 10);
-      })()
-    </script>
-    <script src="scripts/makeRequestBody.js"></script>
-    <script src="scripts/user.js"></script>
-    <script src="scripts/hiddenImages.js"></script>
-    <% if (timeout) { %>
-      <script src="scripts/percentageManagement.js"></script>
-      <script src="scripts/timeout.js"></script>
-    <% } %>
-    <script src="scripts/index.js"></script>
+    <%- include('scripts'); -%>
   </body>
 </html>

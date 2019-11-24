@@ -1,4 +1,12 @@
 (() => {
+  const finalize = () => {
+    const finalDislikeButtonNode = document.getElementById('dislike');
+    finalDislikeButtonNode.addEventListener("click", () => {
+      
+    })
+    const finalLikeButtonNode = document.getElementById('like');
+    window.handleHiddenImages = () => {};
+  }
   let localTimeout = localStorage.getItem('timeout');
   const timeoutNode = document.getElementById('timeout');
   if (localTimeout !== '0') {
@@ -15,10 +23,12 @@
       clearInterval(clockInterval);
       document.getElementById('timeout_modal').className =
         'timeout_modal timeout_modal--visible timeout_modal--show';
+        finalize();
     }, localTimeout + 1000);
   } else {
     document.getElementById('timeout_modal').className =
       'timeout_modal timeout_modal--visible';
     timeoutNode.textContent = '0s';
+    finalize();
   }
 })();
