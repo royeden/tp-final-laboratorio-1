@@ -14,6 +14,13 @@ const app = express();
 let percentage = 0;
 let user_id = 0;
 
+const logPath = './logs/log.txt';
+const increasePath = './logs/increase.txt';
+const decreasePath = './logs/decrease.txt';
+const likePath = './logs/like.txt';
+const dislikePath = './logs/dislike.txt';
+const usersPath = './logs/users.txt';
+
 const fsCallback = error => {
   if (error) {
     return console.error(error);
@@ -22,25 +29,35 @@ const fsCallback = error => {
   console.log(strings.logSaved);
 };
 
-fs.writeFile(
-  'log.txt',
-  `${strings.initialMessage(port)}\n${strings.percentageIsAt(percentage)}\n`,
-  fsCallback
-);
+const write = (path, log) => fs.writeFile(path, log, fsCallback);
+const append = (path, log) => fs.appendFile(path, `\n${log}\n`, fsCallback);
 
+[
+  logPath,
+  increasePath,
+  decreasePath,
+  likePath,
+  dislikePath,
+  usersPath
+].forEach(path =>
+  write(
+    path,
+    `${strings.initialMessage(port)}\n${strings.percentageIsAt(percentage)}\n`
+  )
+);
 
 app.use(bodyParser.json());
 app.use(express.static('static'));
 app.set('view engine', 'ejs');
-app.get('/', function (req, res) {
-  res.render('index', { ...strings.html, values: values.html })
-})
+app.get('/', function(req, res) {
+  res.render('index', { ...strings.html, values: values.html });
+});
 
 const handleUpdateRequest = (log, callback) => (req, res) => {
   const username = req.body.username;
   const logWithUser = log(username);
   console.log(logWithUser);
-  fs.appendFile('log.txt', `\n${logWithUser}\n`, fsCallback);
+  append(logPath, logWithUser);
   callback(req, res, logWithUser);
 };
 
@@ -48,7 +65,8 @@ app.post(
   '/id',
   handleUpdateRequest(
     username => strings.registeredUser(user_id, username),
-    (_, res) => {
+    (_, res, log) => {
+      append(usersPath, log);
       res.json({
         user_id
       });
@@ -75,6 +93,7 @@ app.put(
           : strings.boundaries.max
       }`,
     (_, res, log) => {
+      append(increasePath, log);
       if (percentage < 100) {
         ++percentage;
       }
@@ -95,6 +114,7 @@ app.put(
           : strings.boundaries.min
       }`,
     (_, res, log) => {
+      append(decreasePath, log);
       if (percentage > 0) {
         --percentage;
       }
