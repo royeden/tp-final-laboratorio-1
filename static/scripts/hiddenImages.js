@@ -1,8 +1,8 @@
 (() => {
-  const images = window.thresholds
+  const thresholds = window.thresholds
     .split(',')
     .map(threshold => parseInt(threshold, 10));
-  window.images = window.images.split(',');
+  const images = window.images.split(',');
   
   const hiddenImageNode = document.getElementById('hidden_image');
   let hiddenImagesTimer = null;
@@ -12,7 +12,7 @@
 
   const createHiddenImageTimeout = index => {
     const tempTimeout =
-      (Math.floor(Math.random() * 1000) + 1) * 5 * images[index];
+      (Math.floor(Math.random() * 1000) + 1) * 5 * thresholds[index];
     hiddenImagesTimer = setTimeout(() => {
       hiddenImagesTimerFinished = true;
       hiddenImageNode.src =
