@@ -1,4 +1,9 @@
 (() => {
+  window.thresholds = window.thresholds
+    .split(',')
+    .map(threshold => parseInt(threshold, 10));
+  window.images = window.images.split(',');
+  
   const hiddenImageNode = document.getElementById('hidden_image');
   let hiddenImagesTimer = null;
   let hiddenImagesTimerFinished = false;
@@ -18,7 +23,7 @@
     console.log(tempTimeout / 1000);
   };
 
-  window.handleHiddenImages = percentage => {
+  window.handleHiddenImages = ({ percentage }) => {
     const prevActivateHiddenImages = activateHiddenImages;
     const prevThresholdIndex = thresholdIndex;
     thresholdIndex = percentage ? Math.floor((percentage - 1) / 20) : 0;
