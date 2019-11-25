@@ -13,8 +13,6 @@
     };
     getUserName();
 
-    // username = username.replace(usernameRegex, '') || 'Anonymous';
-
     const getUserId = () =>
       fetch('/id', {
         method: 'POST',

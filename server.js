@@ -95,7 +95,7 @@ const handleUpdateRequest = (log, callback) => (req, res) => {
   const logWithUser = log(username);
   console.log(logWithUser);
   append(fullLogPath, logWithUser);
-  append(logPath(), logWithUser);
+  // append(logPath(), logWithUser); TODO FIX THIS
   callback(req, res, logWithUser);
 };
 
@@ -127,7 +127,7 @@ app.get('/reset', (req, res) => {
 
 app.post('/reset', (req, res) => {
   const password = req.body.password;
-  if (password === PASSWORD && time === 0) {
+  if (password === PASSWORD && time === 0 && !reset) {
     percentage = 0;
     time = null;
     append(fullLogPath, `\n\n===\n\nReset\n${strings.percentageIsAt(percentage)}\n`)
