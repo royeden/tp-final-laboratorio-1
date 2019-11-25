@@ -1,128 +1,40 @@
 import http.requests.*;
 
-// SUBIMAGES (BROKEN)
-// int maxXChange = 125;
-// int maxYChange = 5;
-// float yNoiseChange = 0.01;
-// float timeNoiseChange = 0.013;
+GetRequest getTime = new GetRequest("http://192.168.43.171:3000/time");
+GetRequest getPercentage = new GetRequest("http://192.168.43.171:3000/update");
 
-GetRequest getTime = new GetRequest("http://192.168.1.128:3000/time");
-GetRequest getPercentage = new GetRequest("http://192.168.1.128:3000/update");
+JSONObject timeResponse;
 JSONObject percentageResponse;
 
 int timer = millis();
+int time = 0;
 int percentage = 0;
 
-void requestPercentage () {
-  getPercentage.send();
-  percentageResponse = parseJSONObject(getPercentage.getContent());
-  percentage = percentageResponse.getInt("percentage");
+JSONObject handleGetRequest(GetRequest request) {
+  request.send();
+  return parseJSONObject(request.getContent());
 }
 
-void useTimer () {
-  int time = millis();
-  if (time >= timer + 1000) {
-    timer = time;
-    requestPercentage();
+void updateRequests() {
+  int ellapsed = millis();
+  if (ellapsed >= timer + 1000) {
+    timer = ellapsed;
+    percentageResponse = handleGetRequest(getPercentage);
+    println(percentageResponse);
+    percentage = percentageResponse.getInt("percentage");
   }
 }
 
-void useFilter() {
-  useTimer();
-  image(img, 0, 0, width, height);
-  pushMatrix();
-    int appliedFilter = floor(map(percentage, 0, 100, 0, 4));
-    if (f[appliedFilter] == POSTERIZE) {
-      filter(f[appliedFilter], random(2, 15));
-    } else {
-      filter(f[appliedFilter]);
-    }
-  popMatrix();
-}
-
-// SUBIMAGES (BROKEN)
-// void drawStreak() {
-//   float y = floor(random(height));
-// 	float h = floor(random(20, 30));
-// 	float xChange = floor(map(noise(y * yNoiseChange, (mouseY * 0.3 + frameCount) * timeNoiseChange), 0.06, 0.94, -maxXChange, maxXChange)); //floor(random(-maxXChange, maxXChange));
-// 	float yChange = floor(xChange * (maxYChange / maxXChange) * random(0, 1) > 0.1 ? -1 : 1);
-//   image(img, xChange - maxXChange, -maxYChange + y + yChange, img.width, h, 0, round(y), round(img.width), round(h));
-// }
-
 void setup() {
-  background(255);
+  background(0);
+  // background(255);
   // fullScreen(2);
   fullScreen();
-  img = loadImage("IMG_4156.JPG");
-  // imageMode(CENTER);
-  // image(img, width / 2, height / 2, width, height);
-  image(img, 0, 0, width, height);
+  textAlign(CENTER);
+  textSize(100);
 }
 
 void draw() {
-  useFilter();
-  // pushMatrix();
-  //   translate(width / 2, 0);
-  //   for (int i = 0; i < img.height / 60; i++) {
-  //     drawStreak();
-  //   }
-  // popMatrix();
+  updateRequests();
+  text(percentage, width / 2, height / 2); 
 }
-
-
-// import processing.video.*;
-// String PREFIX_AFEITARSE = "afeitarse_";
-// Movie []VIDEOS_AFEITARSE = new Movie[2];
-// String EXTENSION = ".MOV";
-
-// int counter = millis();
-// int VIDEO = round(random(0, 1));
-// int RETRY = 3;
-// float SHORT_VIDEO;
-
-// void setup() {
-//   fullScreen();
-//   for (int i = 0; i < 2; i++) {
-//     Movie video = new Movie(this, PREFIX_AFEITARSE + (i + 1) + EXTENSION);
-//     video.frameRate(24);
-//     video.play();
-//     video.noLoop();
-//     if (i == 0) {
-//       SHORT_VIDEO = video.duration();
-//     } else {
-//       SHORT_VIDEO = min(SHORT_VIDEO, video.duration());
-//     }
-//     VIDEOS_AFEITARSE[i] = video;
-//   }
-//   frameRate(24);
-//   tint(255, 126);
-//   background(0);
-// }
-
-// void draw() {
-//   for (int i = 0; i < 2; i++) {
-//     image(VIDEOS_AFEITARSE[i], 0, 0, width, height);
-//   }
-//   image(VIDEOS_AFEITARSE[VIDEO], 0, 0, width, height);
-//   if (millis() - counter >= 500) {
-//     VIDEO = round(random(0, 1));
-//     counter = millis();
-//     RETRY--;
-//     if (RETRY == 0) {
-//       RETRY = 3;
-//       if (VIDEO == 0) {
-//         VIDEO  = 1;
-//       } else {
-//         VIDEO = 0;
-//       }
-//     }
-//   }
-//   if (second() >= SHORT_VIDEO) {
-//     exit();
-//   }
-//   saveFrame("./video/########.tif");
-// }
-
-// void movieEvent(Movie m) {
-//   m.read();
-// }
