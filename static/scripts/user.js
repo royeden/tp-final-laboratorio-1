@@ -1,14 +1,19 @@
 (() => {
-  const usernameRegex = /[^\wÑñÁáÉéÍíÓóÚúÜü]+/g;
+  const usernameRegex = /^[\wÑñÁáÉéÍíÓóÚúÜü]+$/;
   const hadUserStored = !!localStorage.getItem('user');
   let username = localStorage.getItem('user');
 
   if (!hadUserStored) {
-    while (!username) {
+    const getUserName = () => {
       username = prompt(window.promptMessage);
-    }
+      if (!usernameRegex.test(username)) {
+        usernameRegex.lastIndex = 0;
+        getUserName();
+      }
+    };
+    getUserName();
 
-    username = username.replace(usernameRegex, '') || 'Anonymous';
+    // username = username.replace(usernameRegex, '') || 'Anonymous';
 
     const getUserId = () =>
       fetch('/id', {

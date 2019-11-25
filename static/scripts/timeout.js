@@ -10,7 +10,7 @@
       });
     };
     finalDislikeButtonNode.addEventListener('click', finalDislike);
-    
+
     const finalLikeButtonNode = document.getElementById('final_like');
     const finalLike = () => {
       fetch('/final_like', {
@@ -45,6 +45,10 @@
       if (localTimeout > 0) localTimeout -= 1000;
       localStorage.setItem('timeout', localTimeout);
       timeoutNode.textContent = `${Math.floor(localTimeout / 1000)}s`;
+      fetch('/time', {
+        method: 'PUT',
+        ...window.makeUpdateRequestBody('timeout', localTimeout)
+      });
     }, 1000);
     setTimeout(() => {
       clearInterval(clockInterval);

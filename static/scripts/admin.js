@@ -4,7 +4,7 @@
 
   const getPassword = callback => {
     while (!password) {
-      password = prompt(window.promptMessage);
+      password = prompt(window.adminPromptMessage);
     }
     localStorage.setItem('password', password);
     if (callback) callback();
@@ -14,7 +14,7 @@
     getPassword();
   }
 
-  const passwordIsCorrect = () =>
+  const verifyPassword = () =>
     fetch('/password', {
       method: 'POST',
       ...window.makeUpdateRequestBody('password', password)
@@ -24,10 +24,12 @@
         if (!correct) {
           password = false;
 
-          alert('Contraseña incorrecta!');
-          getPassword(passwordIsCorrect);
+          alert(window.wrongPassword);
+          getPassword(verifyPassword);
         }
       });
 
-  passwordIsCorrect();
+  verifyPassword();
+
+  window.getCurrentTimeout();
 })();

@@ -17,7 +17,7 @@ const app = express();
 let percentage = 0;
 let user_id = 0;
 let session_id = 0;
-let currentTimer = 0;
+let time = null;
 let reset = false;
 
 const fullLogPath = `./logs/log.txt`;
@@ -99,6 +99,18 @@ const handleUpdateRequest = (log, callback) => (req, res) => {
   callback(req, res, logWithUser);
 };
 
+app.get('/time', (req, res) => {
+  res.json({
+    time
+  })
+})
+
+app.put('/time', (req, res) => {
+  const { timeout } = req.body;
+  time = timeout;
+  res.send(`Received ${time}!`);
+});
+
 app.post('/password', (req, res) => {
   const password = req.body.password;
   res.json({
@@ -115,8 +127,9 @@ app.get('/reset', (req, res) => {
 
 app.post('/reset', (req, res) => {
   const password = req.body.password;
-  if (password === PASSWORD) {
+  if (password === PASSWORD && time === 0) {
     percentage = 0;
+    time = null;
     append(fullLogPath, `\n\n===\n\nReset\n${strings.percentageIsAt(percentage)}\n`)
     reset = true;
     session_id += 1;

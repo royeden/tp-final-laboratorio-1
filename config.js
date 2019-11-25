@@ -23,6 +23,7 @@ const en = {
     fallback: '!'
   },
   html: {
+    adminPrompt: 'Enter the password:',
     decrease: 'Decrease',
     description: 'Violence meter:',
     dislike: 'Dislike',
@@ -34,7 +35,8 @@ const en = {
     prompt: 'Enter your desired name (letters, number and underscores are valid):',
     reset: 'Reset',
     response: 'Violence level:',
-    title: 'Control panel'
+    title: 'Control panel',
+    wrongPassword: 'Wrong password!'
   },
   initialMessage: port => `Initiated server in port ${port}!`,
   logSaved: 'Updated log!',
@@ -60,6 +62,7 @@ const es = {
     fallback: '!'
   },
   html: {
+    adminPrompt: 'Ingresá la contraseña:',
     decrease: 'Disminuir',
     description: 'Medidor de violencia:',
     dislike: 'No me gusta',
@@ -71,7 +74,8 @@ const es = {
     prompt: 'Ingresa el nombre que quieras usar (son válidas letras, números y guiones bajos):',
     reset: 'Reiniciar',
     response: 'Nivel de violencia:',
-    title: 'Panel de control'
+    title: 'Panel de control',
+    wrongPassword: '¡Contraseña incorrecta!'
   },
   initialMessage: port => `¡Servidor iniciado en el puerto ${port}!`,
   logSaved: '¡Datos actualizados!',
