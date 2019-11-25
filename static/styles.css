@@ -8,6 +8,10 @@
   src: url('fonts/Montserrat-Regular.ttf');
 }
 
+:root {
+  font-size: 15px;
+}
+
 * {
   box-sizing: border-box;
   font-family: 'Roboto Mono', sans-serif;

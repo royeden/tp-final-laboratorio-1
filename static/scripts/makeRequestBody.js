@@ -1,8 +1,8 @@
 (() => {
-  window.makeUpdateRequestBody = username => ({
+  window.makeUpdateRequestBody = (key, value) => ({
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      username
+      [key]: value
     })
   });
 })()

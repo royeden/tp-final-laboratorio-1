@@ -5,7 +5,7 @@
   const decreasePercentage = () => {
     fetch('/decrease', {
       method: 'PUT',
-      ...window.makeUpdateRequestBody(username)
+      ...window.makeUpdateRequestBody('username', username)
     });
   };
   decreaseButtonNode.addEventListener('click', decreasePercentage);
@@ -14,7 +14,7 @@
   const increasePercentage = () => {
     fetch('/increase', {
       method: 'PUT',
-      ...window.makeUpdateRequestBody(username)
+      ...window.makeUpdateRequestBody('username', username)
     });
   };
   increaseButtonNode.addEventListener('click', increasePercentage);

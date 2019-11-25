@@ -1,9 +1,12 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
 const express = require('express');
 const fs = require('fs');
 
 const { config } = require('./config');
+
+const { PASSWORD } = process.env;
 
 const { language, port, strings: configStrings, timeout, values } = config;
 
@@ -13,38 +16,64 @@ const app = express();
 
 let percentage = 0;
 let user_id = 0;
+let session_id = 0;
+let currentTimer = 0;
+let reset = false;
 
-const logPath = './logs/log.txt';
-const increasePath = './logs/increase.txt';
-const decreasePath = './logs/decrease.txt';
-const likePath = './logs/like.txt';
-const dislikePath = './logs/dislike.txt';
-const usersPath = './logs/users.txt';
+const fullLogPath = `./logs/log.txt`;
+const logPath = () => `./logs/${session_id}/log.txt`;
+const increasePath = () => `./logs/${session_id}/increase.txt`;
+const decreasePath = () => `./logs/${session_id}/decrease.txt`;
+const dislikePath = () => `./logs/${session_id}/dislike.txt`;
+const likePath = () => `./logs/${session_id}/like.txt`;
+const finalDislikePath = () => `./logs/${session_id}/dislike.txt`;
+const finalLikePath = () => `./logs/${session_id}/like.txt`;
+const usersPath = `./logs/users.txt`;
 
-const fsCallback = error => {
+const fsCallback = path => error => {
   if (error) {
-    return console.error(error);
+    throw new Error(error);
   }
 
-  console.log(strings.logSaved);
+  console.log(`${path}:\n${strings.logSaved}`);
 };
 
-const write = (path, log) => fs.writeFile(path, log, fsCallback);
-const append = (path, log) => fs.appendFile(path, `\n${log}\n`, fsCallback);
+const unlink = path => fs.unlinkSync(path, fsCallback(path));
+const write = (path, log) => fs.writeFile(path, log, fsCallback(path));
+const append = (path, log) =>
+  fs.appendFile(path, `\n${log}\n`, fsCallback(path));
 
-[
-  logPath,
-  increasePath,
-  decreasePath,
-  likePath,
-  dislikePath,
-  usersPath
-].forEach(path =>
-  write(
-    path,
-    `${strings.initialMessage(port)}\n${strings.percentageIsAt(percentage)}\n`
-  )
-);
+fs.readdirSync('./logs/').forEach(folder => {
+  if (fs.lstatSync(`./logs/${folder}`).isDirectory()) {
+    fs.readdirSync(`./logs/${folder}/`).forEach(file => {
+      unlink(`./logs/${folder}/${file}`);
+    });
+    fs.rmdirSync(`./logs/${folder}`);
+  }
+});
+
+write(fullLogPath, `${strings.initialMessage(port)}\n${strings.percentageIsAt(percentage)}\n`);
+write(usersPath, `${strings.initialMessage(port)}\n${strings.percentageIsAt(percentage)}\n`);
+
+const init = () => {
+  fs.mkdir(`./logs/${session_id}`, fsCallback);
+  [
+    logPath,
+    increasePath,
+    decreasePath,
+    dislikePath,
+    likePath,
+    finalDislikePath,
+    finalLikePath
+  ].forEach(path =>
+    write(
+      path(),
+      `${strings.initialMessage(port)}\n${strings.percentageIsAt(percentage)}\n`
+    )
+  );
+};
+
+init();
 
 app.use(bodyParser.json());
 app.use(express.static('static'));
@@ -65,9 +94,27 @@ const handleUpdateRequest = (log, callback) => (req, res) => {
   const username = req.body.username;
   const logWithUser = log(username);
   console.log(logWithUser);
-  append(logPath, logWithUser);
+  append(fullLogPath, logWithUser);
+  append(logPath(), logWithUser);
   callback(req, res, logWithUser);
 };
+
+app.post('/password', (req, res) => {
+  const password = req.body.password;
+  res.json({
+    correct: password === PASSWORD
+  });
+});
+
+app.post('/reset', (req, res) => {
+  const password = req.body.password;
+  if (password === PASSWORD) {
+    reset = true;
+    ++session_id;
+    init();
+  }
+  res.send('Reset');
+});
 
 app.post(
   '/id',
@@ -101,7 +148,7 @@ app.put(
           : strings.boundaries.max
       }`,
     (_, res, log) => {
-      append(increasePath, log);
+      append(increasePath(), log);
       if (percentage < 100) {
         ++percentage;
       }
@@ -122,10 +169,66 @@ app.put(
           : strings.boundaries.min
       }`,
     (_, res, log) => {
-      append(decreasePath, log);
+      append(decreasePath(), log);
       if (percentage > 0) {
         --percentage;
       }
+      res.send(log);
+    }
+  )
+);
+
+app.put(
+  '/like',
+  handleUpdateRequest(
+    username =>
+      `${strings.receivedLike(strings.types.like, username)}${`${
+        strings.boundaries.fallback
+      }\n${strings.percentageIsAt(percentage)}`}`,
+    (_, res, log) => {
+      append(likePath(), log);
+      res.send(log);
+    }
+  )
+);
+
+app.put(
+  '/dislike',
+  handleUpdateRequest(
+    username =>
+      `${strings.receivedLike(strings.types.dislike, username)}${`${
+        strings.boundaries.fallback
+      }\n${strings.percentageIsAt(percentage)}`}`,
+    (_, res, log) => {
+      append(dislikePath(), log);
+      res.send(log);
+    }
+  )
+);
+
+app.put(
+  '/final_like',
+  handleUpdateRequest(
+    username =>
+      `${strings.receivedLike(strings.types.final_like, username)}${`${
+        strings.boundaries.fallback
+      }\n${strings.percentageIsAt(percentage)}`}`,
+    (_, res, log) => {
+      append(finalLikePath(), log);
+      res.send(log);
+    }
+  )
+);
+
+app.put(
+  '/final_dislike',
+  handleUpdateRequest(
+    username =>
+      `${strings.receivedLike(strings.types.final_dislike, username)}${`${
+        strings.boundaries.fallback
+      }\n${strings.percentageIsAt(percentage)}`}`,
+    (_, res, log) => {
+      append(finalDislikePath(), log);
       res.send(log);
     }
   )

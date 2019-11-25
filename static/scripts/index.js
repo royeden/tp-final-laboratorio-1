@@ -1,7 +1,5 @@
 (() => {
   const percentageNode = document.getElementById('percentage');
-  const dislikeButtonNode = document.getElementById('dislike');
-  const likeButtonNode = document.getElementById('like');
 
   const formatUpdateResponse = ({ percentage }) => {
     percentageNode.textContent = `${window.responseMessage} ${percentage}%`;

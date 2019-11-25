@@ -4,7 +4,7 @@ const timeout = 180000;
 const language = 'es';
 
 const patch = {
-  local_ip: '1.128',
+  local_ip: '1.22',
   local_url: '/update',
   regex: /\/\/ change next line\n[^\n]*/g,
   raw_regex: '// change next line',
@@ -32,6 +32,7 @@ const en = {
     like: 'Like',
     loading: 'Loading...',
     prompt: 'Enter your desired name (letters, number and underscores are valid):',
+    reset: 'Reset',
     response: 'Violence level:',
     title: 'Control panel'
   },
@@ -39,10 +40,16 @@ const en = {
   logSaved: 'Updated log!',
   percentageIsAt: percentage => `Percentage is at ${percentage}%`,
   receivedRequest: (type, from) => `Received ${type} request from ${from}`,
+  receivedLike: (type, from) =>
+    `${from} ${type} the presentation`,
   registeredUser: (id, username) => `Registered the user ${id}_${username}`,
   types: {
     decrease: 'decrease',
-    increase: 'increase'
+    increase: 'increase',
+    like: 'likes',
+    dislike: 'dislikes',
+    final_like: 'liked',
+    final_dislike: 'disliked',
   }
 };
 
@@ -62,6 +69,7 @@ const es = {
     like: 'Me gusta',
     loading: 'Cargando...',
     prompt: 'Ingresa el nombre que quieras usar (son válidas letras, números y guiones bajos):',
+    reset: 'Reiniciar',
     response: 'Nivel de violencia:',
     title: 'Panel de control'
   },
@@ -70,10 +78,16 @@ const es = {
   percentageIsAt: percentage => `El porcentaje está al ${percentage}%`,
   receivedRequest: (type, from) =>
     `¡Recibido pedido de ${type} realizado por ${from}`,
+  receivedLike: (type, from) =>
+    `¡A ${from} le ${type} la presentación`,
   registeredUser: (id, username) => `Se registró el usuario ${id}_${username}`,
   types: {
     decrease: 'disminuir',
-    increase: 'incrementar'
+    increase: 'incrementar',
+    like: 'gusta',
+    dislike: 'disgusta',
+    final_like: 'gustó',
+    final_dislike: 'disgustó',
   }
 };
 
