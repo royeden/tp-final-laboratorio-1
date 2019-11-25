@@ -5,9 +5,8 @@ const language = 'es';
 
 const patch = {
   local_ip: '1.128',
-  local_url: '/update',
-  regex: /GetRequest getPercentage = new GetRequest\("([\w.:/]+)"\);/g,
-  replacement: url => `GetRequest getPercentage = new GetRequest("${url}");`
+  regex: /(GetRequest get(\w+) = new GetRequest\("([\w.:/]+)"\);\n)+/,
+  replacement: url => `GetRequest getTime = new GetRequest("${url}/time");\nGetRequest getPercentage = new GetRequest("${url}/update");\n`
 };
 
 const html = {

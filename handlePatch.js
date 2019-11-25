@@ -23,7 +23,7 @@ module.exports = files => {
           const result = data.replace(
             patch.regex,
             patch.replacement(
-              `http://192.168.${patch.local_ip}:${port}${patch.local_url}`
+              `http://192.168.${patch.local_ip}:${port}`
             )
           );
           fs.writeFile(file, result, 'utf8', e => {

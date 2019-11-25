@@ -6,6 +6,7 @@ import http.requests.*;
 // float yNoiseChange = 0.01;
 // float timeNoiseChange = 0.013;
 
+GetRequest getTime = new GetRequest("http://192.168.1.128:3000/time");
 GetRequest getPercentage = new GetRequest("http://192.168.1.128:3000/update");
 JSONObject percentageResponse;
 

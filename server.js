@@ -23,13 +23,20 @@ module.exports = () => {
   let reset = false;
 
   const fullLogPath = `./logs/log.txt`;
-  const logPath = () => `./logs/${session_id}/log.txt`;
-  const increasePath = () => `./logs/${session_id}/increase.txt`;
-  const decreasePath = () => `./logs/${session_id}/decrease.txt`;
-  const dislikePath = () => `./logs/${session_id}/dislike.txt`;
-  const likePath = () => `./logs/${session_id}/like.txt`;
-  const finalDislikePath = () => `./logs/${session_id}/final_dislike.txt`;
-  const finalLikePath = () => `./logs/${session_id}/final_like.txt`;
+  // const logPath = () => `./logs/${session_id}/log.txt`;
+  // const increasePath = () => `./logs/${session_id}/increase.txt`;
+  // const decreasePath = () => `./logs/${session_id}/decrease.txt`;
+  // const dislikePath = () => `./logs/${session_id}/dislike.txt`;
+  // const likePath = () => `./logs/${session_id}/like.txt`;
+  // const finalDislikePath = () => `./logs/${session_id}/final_dislike.txt`;
+  // const finalLikePath = () => `./logs/${session_id}/final_like.txt`;
+  const logPath = () => `./logs/log.txt`;
+  const increasePath = () => `./logs/increase.txt`;
+  const decreasePath = () => `./logs/decrease.txt`;
+  const dislikePath = () => `./logs/dislike.txt`;
+  const likePath = () => `./logs/like.txt`;
+  const finalDislikePath = () => `./logs/final_dislike.txt`;
+  const finalLikePath = () => `./logs/final_like.txt`;
   const usersPath = `./logs/users.txt`;
 
   const fsCallback = path => error => {
@@ -64,7 +71,7 @@ module.exports = () => {
   );
 
   const init = () => {
-    fs.mkdir(`./logs/${session_id}`, fsCallback);
+    // fs.mkdir(`./logs/${session_id}`, fsCallback);
     [
       logPath,
       increasePath,
