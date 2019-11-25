@@ -26,8 +26,8 @@ const increasePath = () => `./logs/${session_id}/increase.txt`;
 const decreasePath = () => `./logs/${session_id}/decrease.txt`;
 const dislikePath = () => `./logs/${session_id}/dislike.txt`;
 const likePath = () => `./logs/${session_id}/like.txt`;
-const finalDislikePath = () => `./logs/${session_id}/dislike.txt`;
-const finalLikePath = () => `./logs/${session_id}/like.txt`;
+const finalDislikePath = () => `./logs/${session_id}/final_dislike.txt`;
+const finalLikePath = () => `./logs/${session_id}/final_like.txt`;
 const usersPath = `./logs/users.txt`;
 
 const fsCallback = path => error => {
@@ -106,11 +106,20 @@ app.post('/password', (req, res) => {
   });
 });
 
+app.get('/reset', (req, res) => {
+  res.json({
+    reset
+  });
+  reset = false;
+});
+
 app.post('/reset', (req, res) => {
   const password = req.body.password;
   if (password === PASSWORD) {
+    percentage = 0;
+    append(fullLogPath, `\n\n===\n\nReset\n${strings.percentageIsAt(percentage)}\n`)
     reset = true;
-    ++session_id;
+    session_id += 1;
     init();
   }
   res.send('Reset');

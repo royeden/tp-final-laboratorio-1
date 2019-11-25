@@ -1,4 +1,4 @@
-(() => {  
+(() => {
   const username = localStorage.getItem('user');
   
   const dislikeButtonNode = document.getElementById('dislike');
