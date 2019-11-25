@@ -4,10 +4,9 @@ const timeout = 180000;
 const language = 'es';
 
 const patch = {
-  local_ip: '1.22',
+  local_ip: '1.128',
   local_url: '/update',
-  regex: /\/\/ change next line\n[^\n]*/g,
-  raw_regex: '// change next line',
+  regex: /GetRequest getPercentage = new GetRequest\("([\w.:/]+)"\);/g,
   replacement: url => `GetRequest getPercentage = new GetRequest("${url}");`
 };
 
