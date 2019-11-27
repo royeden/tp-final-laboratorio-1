@@ -1,10 +1,17 @@
 import http.requests.*;
 import processing.video.*;
 
+GlitchObject noiseGlitch;
 Movie video;
-PImage img;
+
+// Ads
+int ADS_LENGTH = 12;
+PImage ads[] = new PImage[ADS_LENGTH];
+int adIndex = floor(random(0, ADS_LENGTH));
 boolean adChance = false;
+// boolean glitch = true;
 int adSecond;
+int thresholdSecond;
 
 GetRequest getTime = new GetRequest("http://192.168.0.7:3000/time");
 GetRequest getPercentage = new GetRequest("http://192.168.0.7:3000/update");
@@ -48,45 +55,62 @@ boolean isSameSecond(int prevSecond) {
 }
 
 void ad() {
-  image(img, width / 2, height / 2);
+  if (adChance) {
+    adChance = isSameSecond(adSecond);
+  } else {
+    adChance = chance(0, 100, mapPercentage(0, 2));
+    if (adChance) {
+      adSecond = second();
+      adIndex = floor(random(0, ADS_LENGTH));
+    }
+  }
+  if (adChance) {
+    tint(255, mapPercentage(255, 0), mapPercentage(255, 0));
+    image(ads[adIndex], width / 2, height / 2);
+  }
 }
 
 void setup() {
   background(0);
-  // background(255);
   // fullScreen(2);
   frameRate(24);
   fullScreen();
   textAlign(CENTER);
   imageMode(CENTER);
   textSize(100);
-  img = loadImage("1.png");
-  img.resize(0, height);
-  video = new Movie(this, "afeitarse_2.MOV");
-  video.frameRate(24);
+  for (int i = 0; i < ADS_LENGTH; i++) {
+    ads[i] = loadImage(i + 1 + ".png");
+    ads[i].resize(0, height);
+  }
+  video = new Movie(this, "afeitarse_fati_traje.mp4");
+  // video.frameRate(24);
+  video.volume(0);
   video.loop();
+  noiseGlitch = new GlitchObject(10, width, height);
 }
 
 void draw() {
   updateRequests();
-  tint(255, mapPercentage(255, 0), mapPercentage(255, 0));
+  if (chance(0, 100, mapPercentage(0, 1)) || isSameSecond(thresholdSecond)) {
+    if (!isSameSecond(thresholdSecond)) {
+      thresholdSecond = second();
+    }
+    filter(THRESHOLD);
+  } else {
+    thresholdSecond = -1;
+  }
+  tint(255, mapPercentage(255, 0), mapPercentage(255, 0), mapPercentage(255, 128));
   if (time > 0) {
     PImage frame = video;
     frame.resize(0, height);
     image(frame, width / 2, height / 2);
-    if (adChance) {
-      adChance = isSameSecond(adSecond);
-    } else {
-      adChance = chance(0, 100, mapPercentage(0, 2));
-      if (adChance) {
-        adSecond = second();
-      }
-    }
-    if (adChance) ad();
+    ad();
+    filter(POSTERIZE, round(random(mapPercentage(59, 2), 60)));
+    if (chance(0, 100, mapPercentage(0, 10))) filter(BLUR, round(random(0, 1)));
+    if (chance(0, 100, mapPercentage(0, 10))) filter(DILATE);
+  } else {
+    clear();
   }
-  filter(POSTERIZE, round(random(mapPercentage(59, 2), 60)));
-  if (chance(0, 100, mapPercentage(0, 10))) filter(BLUR, round(random(0, 1)));
-  if (chance(0, 100, mapPercentage(0, 10))) filter(DILATE);
   text(time, width / 2, height / 2);
   text(percentage, width / 2, height / 2 + 100);
 }
