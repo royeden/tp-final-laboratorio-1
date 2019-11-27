@@ -167,7 +167,7 @@ module.exports = () => {
         `\n\n===\n\nReset\n${strings.percentageIsAt(percentage)}\n`
       );
       reset = true;
-      session_id += 1;
+      // session_id += 1;
       init();
     }
     res.send('Reset');
