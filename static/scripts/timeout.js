@@ -3,13 +3,18 @@
 
   const finalize = () => {
     const finalDislikeButtonNode = document.getElementById('final_dislike');
+    const finalize = callback => () => {
+      callback();
+      const finalDisplayNode = document.getElementById('final_display');
+      finalDisplayNode.innerHTML = "<h3>Muchas gracias por participar!</h3>"
+    }
     const finalDislike = () => {
       fetch('/final_dislike', {
         method: 'PUT',
         ...window.makeUpdateRequestBody('username', username)
       });
     };
-    finalDislikeButtonNode.addEventListener('click', finalDislike);
+    finalDislikeButtonNode.addEventListener('click', finalize(finalDislike));
 
     const finalLikeButtonNode = document.getElementById('final_like');
     const finalLike = () => {
@@ -18,7 +23,7 @@
         ...window.makeUpdateRequestBody('username', username)
       });
     };
-    finalLikeButtonNode.addEventListener('click', finalLike);
+    finalLikeButtonNode.addEventListener('click', finalize(finalLike));
 
     window.handleHiddenImages = () => {};
     setInterval(() => {
@@ -29,7 +34,7 @@
         .then(({ reset }) => {
           if (reset) {
             localStorage.clear();
-            location.reload();
+            window.close();
           }
         });
     }, 1000);

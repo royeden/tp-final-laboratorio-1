@@ -14,7 +14,7 @@
               'display_timeout'
             );
             const timeout = parseInt(time, 10);
-            if (timeout > 0) {
+            if (timeout >= 0) {
               setTimeout(getTimeout, 1000);
               displayTimeoutNode.textContent = `${Math.floor(
                 timeout / 1000
