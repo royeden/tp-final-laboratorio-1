@@ -7,7 +7,7 @@ const { config } = require('./config');
 
 module.exports = () => {
   require('dotenv').config();
-  
+
   const { PASSWORD } = process.env;
 
   const { language, port, strings: configStrings, timeout, values } = config;
@@ -18,9 +18,10 @@ module.exports = () => {
 
   let percentage = 0;
   let user_id = 0;
-  let session_id = 0;
-  let time = null;
+  // let session_id = 0;
+  let time = 0;
   let reset = false;
+  let debugActive = false;
 
   const fullLogPath = `./logs/log.txt`;
   // const logPath = () => `./logs/${session_id}/log.txt`;
@@ -107,6 +108,10 @@ module.exports = () => {
     res.render('admin', { ...strings.html, timeout: 0, values: values.html });
   });
 
+  app.get('/debug', function(req, res) {
+    res.render('debug', { ...strings.html, timeout: 0, values: values.html });
+  });
+
   const handleUpdateRequest = (log, callback) => (req, res) => {
     const username = req.body.username;
     const logWithUser = log(username);
@@ -140,6 +145,16 @@ module.exports = () => {
       reset
     });
     reset = false;
+  });
+
+  app.post('/debug', (req, res) => {
+    debugActive = !req.body.debugMode;
+    if (debugActive) {
+      time = 1000;
+    } else {
+      time = 0;
+    }
+    res.json({ debugActive });
   });
 
   app.post('/reset', (req, res) => {

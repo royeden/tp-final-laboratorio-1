@@ -13,20 +13,17 @@
             const displayTimeoutNode = document.getElementById(
               'display_timeout'
             );
-            localTimeout = parseInt(time, 10);
-            const clockInterval = setInterval(() => {
-              if (localTimeout > 0) localTimeout -= 1000;
-              localStorage.setItem('time', localTimeout);
+            const timeout = parseInt(time, 10);
+            if (timeout > 0) {
+              setTimeout(getTimeout, 1000);
               displayTimeoutNode.textContent = `${Math.floor(
-                localTimeout / 1000
+                timeout / 1000
               )}s`;
-            }, 1000);
-            setTimeout(() => {
-              clearInterval(clockInterval);
-              window.getCurrentTimeout();
-            }, localTimeout + 1000);
-          } else {
-            localStorage.setItem('time', '');
+            } else {
+              setTimeout(() => {
+                window.getCurrentTimeout();
+              }, 1000);
+            }
           }
         });
     };
