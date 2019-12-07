@@ -4,7 +4,7 @@ const timeout = 180000;
 const language = 'es';
 
 const patch = {
-  local_ip: '1.103',
+  local_ip: '0.7',
   regex: /(GetRequest get(\w+) = new GetRequest\("([\w.:/]+)"\);\n)+/,
   replacement: url => `GetRequest getTime = new GetRequest("${url}/time");\nGetRequest getPercentage = new GetRequest("${url}/update");\n`
 };

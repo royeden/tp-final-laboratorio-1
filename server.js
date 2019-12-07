@@ -1,7 +1,8 @@
 const bodyParser = require('body-parser');
-const chalk = require('chalk');
 const express = require('express');
+const chalk = require('chalk');
 const fs = require('fs');
+const serveStatic = require('serve-static')
 
 const { config } = require('./config');
 
@@ -96,9 +97,11 @@ module.exports = () => {
   app.use(bodyParser.json());
   app.use(express.static('static'));
   app.set('view engine', 'ejs');
-  app.get('/', function(req, res) {
-    res.render('index', { ...strings.html, timeout: 0, values: values.html });
-  });
+  app.use(serveStatic('client/build/'));
+
+  // app.get('/', function(req, res) {
+  //   res.render('index', { ...strings.html, timeout: 0, values: values.html });
+  // });
 
   app.get('/timeout', function(req, res) {
     res.render('index', { ...strings.html, timeout, values: values.html });

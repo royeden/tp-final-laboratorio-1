@@ -19,8 +19,8 @@ boolean adChance = false;
 int adSecond;
 int thresholdSecond;
 
-GetRequest getTime = new GetRequest("http://192.168.1.103:3000/time");
-GetRequest getPercentage = new GetRequest("http://192.168.1.103:3000/update");
+GetRequest getTime = new GetRequest("http://192.168.0.7:3000/time");
+GetRequest getPercentage = new GetRequest("http://192.168.0.7:3000/update");
 
 JSONObject timeResponse;
 JSONObject percentageResponse;
@@ -98,9 +98,9 @@ void finish() {
 
 void setup() {
   background(0);
-  // fullScreen(2);
+  fullScreen(2);
   frameRate(24);
-  fullScreen();
+  // fullScreen();
   textAlign(CENTER);
   imageMode(CENTER);
   textSize(100);
@@ -151,8 +151,8 @@ void draw() {
     finish();
     clear();
   }
-  text(time, width / 2, height / 2);
-  text(percentage, width / 2, height / 2 + 100);
+  // text(time, width / 2, height / 2);
+  // text(percentage, width / 2, height / 2 + 100);
 }
 
 void movieEvent(Movie m) {
