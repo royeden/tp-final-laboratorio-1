@@ -25,12 +25,6 @@ const jsonRequestBody = (body = {}) => ({
 });
 
 const api = {
-  getId: shouldUseMock
-    ? mockRequest('/id', { id: 0 })
-    : () =>
-        fetch('/id', {
-          method: 'GET'
-        }),
   getPercentage: shouldUseMock
     ? mockRequest(
         '/percentage',
@@ -54,6 +48,15 @@ const api = {
     : fetch('/time', {
         method: 'GET'
       }),
+  postId: shouldUseMock
+    ? mockRequest('/id', { id: 0 })
+    : user =>
+        fetch('/id', {
+          method: 'GET',
+          ...jsonRequestBody({
+            user
+          })
+        }),
   postPercentageDecrease: shouldUseMock
     ? mockRequest(
         '/decrease',
