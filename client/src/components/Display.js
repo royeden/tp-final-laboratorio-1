@@ -27,20 +27,20 @@ const RectContainer = styled.div`
 const Rect = styled.div`
   background-color: hsl(
     ${({ percentage }) =>
-      `${mapValue(percentage, -100, 100, 193, 338)},${mapValue(
+      `${mapValue(percentage, -100, 100, 193, 338)},${Math.abs(mapValue(
         percentage,
         -100,
         100,
-        95,
+        -95,
         85
-      )}%,${mapValue(percentage, -100, 100, 68, 46)}%`}
+      ))}%,${mapValue(percentage, -100, 100, 68, 46)}%`}
   );
 
   height: 2rem;
   transform: translateX(
     ${({ percentage }) => mapValue(percentage, -100, 100, -45, 45)}vw
   );
-  transition: color 1s ease, transform 1s ease;
+  transition: color 1s ease, transform 0.5s ease;
   width: 2vw;
 `;
 
