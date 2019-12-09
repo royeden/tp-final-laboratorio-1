@@ -1,3 +1,7 @@
+const mocks = {
+  time: 180,
+  percentage: 0
+};
 const shouldUseMock = process.env.NODE_ENV === 'development';
 
 const mockRequest = (endpoint, mockData, useJson = true, time = 1000) => req =>
@@ -11,7 +15,7 @@ const mockRequest = (endpoint, mockData, useJson = true, time = 1000) => req =>
             }
           : data
       );
-      console.log(`Mocked ${endpoint} response:`, data)
+      console.log(`Mocked ${endpoint} response:`, data);
     }, time)
   );
 
@@ -27,6 +31,19 @@ const api = {
         fetch('/id', {
           method: 'GET'
         }),
+  getTime: shouldUseMock
+    ? mockRequest(
+        '/time',
+        () => {
+          if (mocks.time > 0) mocks.time -= 1;
+          return { time: mocks.time };
+        },
+        true,
+        500
+      )
+    : fetch('/time', {
+        method: 'GET'
+      }),
   postUser: shouldUseMock
     ? mockRequest(
         '/user',

@@ -9,7 +9,7 @@ import Loader from './Loader';
 const Center = styled.div`
   align-items: center;
   display: flex;
-  flex: ${({ grow }) => grow ? 1 : 0};
+  flex: ${({ grow }) => (grow ? 1 : 0)};
   justify-content: center;
 `;
 
@@ -19,7 +19,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-
 
 const UserForm = ({ loading, onSubmit }) => {
   const userInput = useRef();
@@ -33,12 +32,12 @@ const UserForm = ({ loading, onSubmit }) => {
 
   useEffect(() => {
     if (value) {
-      const regexp = /[^\wÑñÁáÉéÍíÓóÚúÜü _\-.]+/g;
-      if (regexp.test(value))
+      const regexp = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü][\wÑñÁáÉéÍíÓóÚúÜü _\-.]*\S$/g;
+      if (!regexp.test(value)) {
         setError(
-          'Por favor ingresa caracteres válidos (letras, números, espacios "_", "-" o ".")'
+          'Por favor ingresá al menos una letra, caracteres válidos (letras, números, espacios "_", "-" o ".") y no uses un espacio al final 😉'
         );
-      else setError('');
+      } else setError('');
     } else setError('Es requerido ingresar un nombre');
   }, [value]);
 
@@ -66,7 +65,6 @@ const UserForm = ({ loading, onSubmit }) => {
         title="Nombre"
         value={value}
       />
-
       <Center>
         <Button type="primary" onClick={handleSubmit}>
           Confirmar
