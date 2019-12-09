@@ -35,7 +35,7 @@ const UserForm = ({ loading, onSubmit }) => {
       const regexp = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü][\wÑñÁáÉéÍíÓóÚúÜü _\-.]*\S$/g;
       if (!regexp.test(value)) {
         setError(
-          'Por favor ingresá al menos una letra, caracteres válidos (letras, números, espacios "_", "-" o ".") y no uses un espacio al final 😉'
+          'Por favor ingresá al menos una letra y un caracter válido (letra, número, espacio, "_", "-" ó ".") y no uses un espacio al final 😉'
         );
       } else setError('');
     } else setError('Es requerido ingresar un nombre');
