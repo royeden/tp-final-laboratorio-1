@@ -2,7 +2,8 @@ const mocks = {
   time: 180,
   percentage: 0
 };
-const shouldUseMock = process.env.NODE_ENV === 'development';
+const shouldUseMock = true;
+// const shouldUseMock = process.env.NODE_ENV === 'development';
 
 const mockRequest = (endpoint, mockData, useJson = true, time = 1000) => req =>
   new Promise(resolve =>
@@ -38,7 +39,7 @@ const api = {
         true,
         500
       )
-    : fetch('/percentage', {
+    : () => fetch('/percentage', {
         method: 'GET'
       }),
   getTime: shouldUseMock
@@ -51,7 +52,7 @@ const api = {
         true,
         500
       )
-    : fetch('/time', {
+    : () => fetch('/time', {
         method: 'GET'
       }),
   postPercentageDecrease: shouldUseMock
