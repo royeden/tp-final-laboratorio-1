@@ -10,7 +10,7 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  justify-content: center;
+  justify-content: space-around;
   width: 100vw;
 `;
 
@@ -18,17 +18,18 @@ const UI = () => {
   const { user, userHasId, resetUser } = useContext(userContext);
 
   return (
-    <Container>
-      {userHasId && process.env.NODE_ENV === 'development' && (
-        <>
-          <h1>Bienvenidx {user.replace(/\d_/, "")}:</h1>
-          <Clock />
+    userHasId && (
+      <Container>
+        <h1>Bienvenidx {user.replace(/\d_/, '')}:</h1>
+        
+        <Clock />
+        {process.env.NODE_ENV === 'development' && (
           <Button onClick={resetUser} type="secondary">
             Reset
           </Button>
-        </>
-      )}
-    </Container>
+        )}
+      </Container>
+    )
   );
 };
 
