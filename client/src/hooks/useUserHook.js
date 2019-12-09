@@ -15,7 +15,7 @@ const useUserHook = () => {
     if (!userHasId && !userLoading && user) {
       setUserLoading(true);
       api
-        .postId()
+        .getId()
         .then(res => res.json())
         .then(({ id }) => {
           const realUser = `${id}_${user}`;
