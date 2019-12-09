@@ -24,11 +24,9 @@ const UI = () => {
         <h1>Bienvenidx {user.replace(/\d_/, '')}:</h1>
         <Display />
         <Clock />
-        {process.env.NODE_ENV === 'development' && (
-          <Button onClick={resetUser} type="brown">
-            Reset
-          </Button>
-        )}
+        <Button onClick={resetUser} type="brown">
+          Reset
+        </Button>
       </Container>
     )
   );
