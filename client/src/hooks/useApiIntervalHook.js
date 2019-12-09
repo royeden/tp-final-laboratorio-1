@@ -2,9 +2,14 @@ import { useState } from 'react';
 
 const useApiIntervalHook = (request, interval = 1000) => {
   const [response, setResponse] = useState(null);
-  const [intervalStarted, setIntervalStarted] = useState(false);
+  const [running, setRunning] = useState(false);
 
   let intervalId = null;
+
+  const stop = () => {
+    setRunning(false);
+    clearInterval(intervalId);
+  }
 
   const tepmRequest = async () => {
     const tempRes = await request();
@@ -15,16 +20,11 @@ const useApiIntervalHook = (request, interval = 1000) => {
   const intervalCallback = () => setResponse(tepmRequest())
 
   const start = () => {
-    setIntervalStarted(true);
+    setRunning(true);
     intervalId = setInterval(intervalCallback, interval);
   }
-  
-  const stop = () => {
-    setIntervalStarted(false);
-    clearInterval(intervalId);
-  }
 
-  return [response, start, stop, intervalStarted];
+  return [response, start, stop, running];
 }
 
 export default useApiIntervalHook;
