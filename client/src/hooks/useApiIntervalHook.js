@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import useIntervalHook from './useIntervalHook';
 
@@ -9,6 +9,10 @@ const useApiIntervalHook = (request, interval = 1000) => {
   const start = () => setRunning(true);
   const stop = () => setRunning(false);
 
+  useEffect(() => {
+    return stop
+  }, [])
+
   useIntervalHook(() => {
     const tepmRequest = async () => {
       const tempRes = await request();
@@ -17,7 +21,6 @@ const useApiIntervalHook = (request, interval = 1000) => {
     };
     setResponse(tepmRequest());
   }, running ? interval : null)
-
 
   return [response, start, stop, running];
 }

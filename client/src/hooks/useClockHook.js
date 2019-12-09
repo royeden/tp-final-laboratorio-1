@@ -5,16 +5,13 @@ import useApiIntervalHook from './useApiIntervalHook';
 
 const useClockHook = () => {
   const [clock, setClock] = useState(0);
-  const [response, start, stop] = useApiIntervalHook(api.getTime);
-
+  const [response, start] = useApiIntervalHook(api.getTime);
 
   if (response) response.then(({ time }) => time).then(setClock);
 
   useEffect(() => {
-    start();
-    return stop;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    start()
+  }, [start])
 
   return clock > 0 ? clock : 0;
 };
