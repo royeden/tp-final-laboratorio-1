@@ -24,7 +24,7 @@ const UI = () => {
         
         <Clock />
         {process.env.NODE_ENV === 'development' && (
-          <Button onClick={resetUser} type="secondary">
+          <Button onClick={resetUser} type="brown">
             Reset
           </Button>
         )}

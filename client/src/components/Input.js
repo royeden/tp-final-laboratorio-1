@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const baseColor = '#000';
 const errorColor = 'var(--custom-red)';
-const focusedColor = 'var(--primary)';
+const focusedColor = 'var(--custom-green)';
 
 const Container = styled.div`
   margin-bottom: 1rem;

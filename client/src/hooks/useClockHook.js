@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import api from '../api';
+
 import useApiIntervalHook from './useApiIntervalHook';
 
 const useClockHook = () => {
@@ -10,8 +11,8 @@ const useClockHook = () => {
   if (response) response.then(({ time }) => time).then(setClock);
 
   useEffect(() => {
-    start()
-  }, [start])
+    start();
+  }, [start]);
 
   return clock > 0 ? clock : 0;
 };

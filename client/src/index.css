@@ -9,8 +9,8 @@
 }
 
 :root {
-  --primary: #61DAFB;
-  --secondary: #504746;
+  --custom-lightblue: #61DAFB;
+  --custom-brown: #504746;
   --custom-green: #399E5A;
   --custom-red: #D81159;
 }

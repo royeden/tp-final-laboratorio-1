@@ -24,7 +24,7 @@ const LoaderItem = styled.span`
   animation: ${opacityAnimation} 1s,
     ${scaleAnimation} 1s ${({ amount, delay }) => delay / amount}s infinite;
   border-radius: 50%;
-  background-color: var(--${({ color }) => color});
+  background-color: var(--custom-${({ color }) => color});
   height: ${({ size }) => size}rem;
   margin: ${({ size }) => size / 8}rem;
   width: ${({ size }) => size}rem;
@@ -39,7 +39,7 @@ const Loader = ({ amount, ...props }) => (
 );
 
 Loader.defaultProps = {
-  color: 'primary'
+  color: 'green'
 };
 
 Loader.propTypes = {};

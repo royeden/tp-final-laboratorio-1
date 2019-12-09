@@ -2,18 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 // import PropTypes from 'prop-types';
 
-const TYPES = {
-  customRed: 'custom-red',
-  customGreen: 'custom-green',
-  primary: 'primary',
-  secondary: 'secondary',
-};
-
 const StyledButton = styled.button`
-  background-color: ${({ type }) => type ? `var(--${TYPES[type]})` : 'transparent'};
+  background-color: ${({ type }) => `var(--custom-${type})`};
   border: none;
   border-radius: 4px;
-  color: ${({ type }) => type === "secondary" || type === "customRed" ? "white" : "black"};
+  color: ${({ type }) =>
+    ['brown', 'red'].find(t => t === type) ? 'white' : 'black'};
   cursor: pointer;
   /* font-family: ''; */
   font-size: 1rem;
@@ -23,7 +17,8 @@ const StyledButton = styled.button`
 
   :focus,
   :hover {
-    filter: brightness(${({ type }) => type === "secondary" ? 150 : 90}%);
+    box-shadow: 1px 1px 2px #00000044;
+    filter: brightness(${({ type }) => ['brown', 'green'].find(t => t === type) ? 120 : 90}%);
   }
 `;
 
@@ -35,8 +30,6 @@ const Button = ({ children, ...props }) => {
   );
 };
 
-Button.propTypes = {
-  
-};
+Button.propTypes = {};
 
 export default Button;

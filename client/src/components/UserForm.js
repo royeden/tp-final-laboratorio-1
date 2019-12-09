@@ -66,7 +66,7 @@ const UserForm = ({ loading, onSubmit }) => {
         value={value}
       />
       <Center>
-        <Button type="primary" onClick={handleSubmit}>
+        <Button type="green" onClick={handleSubmit}>
           Confirmar
         </Button>
       </Center>
