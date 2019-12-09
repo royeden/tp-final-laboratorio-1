@@ -10,7 +10,7 @@ const Container = styled.div`
   margin-bottom: 1rem;
 `;
 
-const StyledInputContainer = styled.div`
+const InputContainer = styled.div`
   border-radius: 4px 4px 0px 0px;
   border-bottom: 2px solid
     ${({ error, focused }) =>
@@ -19,7 +19,7 @@ const StyledInputContainer = styled.div`
   transition: border-bottom 0.4s ease;
 `;
 
-const StyledLabel = styled.label`
+const Label = styled.label`
   color: ${({ error }) => (error ? errorColor : baseColor)};
   font-size: 0.9rem;
 `;
@@ -33,7 +33,7 @@ const StyledInput = styled.input`
   width: 100%;
 `;
 
-const StyledError = styled.span`
+const Error = styled.span`
   color: ${errorColor};
 `;
 
@@ -70,13 +70,13 @@ const Input = ({ error, onBlur, onFocus, onSubmit, title, value, ...props }, ref
 
   return (
     <Container>
-      <StyledInputContainer
+      <InputContainer
         error={error}
         onClick={focusInput}
         focused={focused}
       >
         <>
-          <StyledLabel htmlFor={title}>{title}</StyledLabel>
+          <Label htmlFor={title}>{title}</Label>
           <StyledInput
             {...props}
             onBlur={handleBlur}
@@ -87,8 +87,8 @@ const Input = ({ error, onBlur, onFocus, onSubmit, title, value, ...props }, ref
             value={value}
           />
         </>
-      </StyledInputContainer>
-      {error && !focused && <StyledError>{error}</StyledError>}
+      </InputContainer>
+      {error && !focused && <Error>{error}</Error>}
     </Container>
   );
 };

@@ -32,7 +32,12 @@ const api = {
           method: 'GET'
         }),
   getPercentage: shouldUseMock
-    ? mockRequest('/percentage', { percentage: mocks.percentage }, true, 500)
+    ? mockRequest(
+        '/percentage',
+        () => ({ percentage: mocks.percentage }),
+        true,
+        500
+      )
     : fetch('/percentage', {
         method: 'GET'
       }),
@@ -49,6 +54,25 @@ const api = {
     : fetch('/time', {
         method: 'GET'
       }),
+  postPercentageDecrease: shouldUseMock
+    ? mockRequest(
+        '/decrease',
+        () => {
+          if (mocks.percentage > -100) --mocks.percentage;
+          return {
+            body: `Percentage increased to ${mocks.percentage}%`,
+            ok: true
+          };
+        },
+        false
+      )
+    : user =>
+        fetch('/decrease', {
+          method: 'POST',
+          ...jsonRequestBody({
+            user
+          })
+        }),
   postPercentageIncrease: shouldUseMock
     ? mockRequest(
         '/increase',

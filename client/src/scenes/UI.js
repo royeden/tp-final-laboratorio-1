@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Button from '../components/Button';
 import { userContext } from '../context/UserProvider';
 import Clock from '../components/Clock';
+import Display from '../components/Display';
 
 const Container = styled.main`
   align-items: center;
@@ -21,7 +22,7 @@ const UI = () => {
     userHasId && (
       <Container>
         <h1>Bienvenidx {user.replace(/\d_/, '')}:</h1>
-        
+        <Display />
         <Clock />
         {process.env.NODE_ENV === 'development' && (
           <Button onClick={resetUser} type="brown">
