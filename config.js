@@ -42,7 +42,7 @@ const en = {
   receivedRequest: (type, from) => `Received ${type} request from ${from}`,
   receivedLike: (type, from) =>
     `${from} ${type} the presentation`,
-  registeredUser: (id, username) => `Registered the user ${id}_${username}`,
+  registeredUser: username => `Registered the user ${username}`,
   types: {
     decrease: 'decrease',
     increase: 'increase',
@@ -82,7 +82,7 @@ const es = {
     `¡Recibido pedido de ${type} realizado por ${from}`,
   receivedLike: (type, from) =>
     `¡A ${from} le ${type} la presentación`,
-  registeredUser: (id, username) => `Se registró el usuario ${id}_${username}`,
+  registeredUser: username => `Se registró el usuario ${username}`,
   types: {
     decrease: 'disminuir',
     increase: 'incrementar',

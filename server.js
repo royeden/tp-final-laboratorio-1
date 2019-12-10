@@ -20,7 +20,7 @@ module.exports = () => {
   let percentage = 0;
   let user_id = 0;
   // let session_id = 0;
-  let time = 0;
+  let time = 180;
   let reset = false;
   let debugActive = false;
 
@@ -116,8 +116,8 @@ module.exports = () => {
   });
 
   const handleUpdateRequest = (log, callback) => (req, res) => {
-    const username = req.body.username;
-    const logWithUser = log(username);
+    const user = req.body.user;
+    const logWithUser = log(user);
     console.log(logWithUser);
     append(fullLogPath, logWithUser);
     // append(logPath(), logWithUser); TODO FIX THIS
@@ -176,27 +176,31 @@ module.exports = () => {
     res.send('Reset');
   });
 
+  app.get('/id', (_, res) => {
+    res.json({
+      id: user_id
+    });
+    ++user_id;
+  });
+
   app.post(
-    '/id',
+    '/user',
     handleUpdateRequest(
-      username => strings.registeredUser(user_id, username),
+      username => strings.registeredUser(username),
       (_, res, log) => {
         append(usersPath, log);
-        res.json({
-          user_id
-        });
-        ++user_id;
+        res.send(log);
       }
     )
   );
 
-  app.get('/update', (_, res) => {
+  app.get('/percentage', (_, res) => {
     res.json({
       percentage
     });
   });
 
-  app.put(
+  app.post(
     '/increase',
     handleUpdateRequest(
       username =>
@@ -217,12 +221,12 @@ module.exports = () => {
     )
   );
 
-  app.put(
+  app.post(
     '/decrease',
     handleUpdateRequest(
       username =>
         `${strings.receivedRequest(strings.types.decrease, username)}${
-          percentage > 0
+          percentage > -100
             ? `${strings.boundaries.fallback}\n${strings.percentageIsAt(
                 percentage - 1
               )}`
@@ -230,7 +234,7 @@ module.exports = () => {
         }`,
       (_, res, log) => {
         append(decreasePath(), log);
-        if (percentage > 0) {
+        if (percentage > -100) {
           --percentage;
         }
         res.send(log);

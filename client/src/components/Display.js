@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import api from '../api';
 import mapValue from '../utils/mapValue';
-import usePercentageHook from '../hooks/usePercentageHook';
 import { userContext } from '../context/UserProvider';
+import { percentageContext } from '../context/PercentageProvider';
 
 import Button from './Button';
 
@@ -27,13 +27,9 @@ const RectContainer = styled.div`
 const Rect = styled.div`
   background-color: hsl(
     ${({ percentage }) =>
-      `${mapValue(percentage, -100, 100, 193, 338)},${Math.abs(mapValue(
-        percentage,
-        -100,
-        100,
-        -95,
-        85
-      ))}%,${mapValue(percentage, -100, 100, 68, 46)}%`}
+      `${mapValue(percentage, -100, 100, 193, 338)},${Math.abs(
+        mapValue(percentage, -100, 100, -95, 85)
+      )}%,${mapValue(percentage, -100, 100, 68, 46)}%`}
   );
 
   height: 2rem;
@@ -61,14 +57,14 @@ const ButtonsContainer = styled.div`
 `;
 
 const Display = () => {
-  const percentage = usePercentageHook();
+  const { percentage } = useContext(percentageContext);
   const { user } = useContext(userContext);
 
   const decrease = () => api.postPercentageDecrease(user);
   const increase = () => api.postPercentageIncrease(user);
   return (
     <Container>
-      <h3>Nivel de violencia:</h3>
+      <h3>Nivel de violencia: {percentage}%</h3>
       <LabelsContainer>
         <span>-100%</span>
         <span>0%</span>
