@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
-// import PropTypes from 'prop-types';
 
 const StyledButton = styled.button`
   background-color: ${({ type }) => `var(--custom-${type})`};
@@ -22,14 +21,12 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = ({ children, ...props }) => {
+const Button = ({ children, ...props }, ref) => {
   return (
-    <StyledButton {...props}>
+    <StyledButton ref={ref} {...props}>
       {children.toUpperCase ? children.toUpperCase() : children}
     </StyledButton>
   );
 };
 
-Button.propTypes = {};
-
-export default Button;
+export default forwardRef(Button);

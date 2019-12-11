@@ -62,7 +62,7 @@ const Modal = ({ children, dismissable, onClose, visible }) => {
 };
 
 Modal.propTypes = {
-  dismissable: bool.isRequired,
+  dismissable: bool,
   onClose: func,
   visible: bool.isRequired
 };
