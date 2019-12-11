@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+// import PropTypes from 'prop-types';
 
+import { clockContext } from '../context/ClockProvider';
 import { percentageContext } from '../context/PercentageProvider';
+import { userContext } from '../context/UserProvider';
 import mapValue from '../utils/mapValue';
 import images from '../images';
-// import PropTypes from 'prop-types';
 
 const Container = styled.div`
   align-items: center;
@@ -39,8 +41,9 @@ const Ad = styled.img`
   object-fit: contain;
 `;
 
-const Ads = () => {
+const AdsManager = () => {
   const [ad, setAd] = useState(false);
+  const { clock } = useContext(clockContext);
   const { percentage } = useContext(percentageContext);
   useEffect(() => {
     if (percentage < 0 && !ad) {
@@ -51,7 +54,8 @@ const Ads = () => {
         setAd(Math.floor(Math.random() * images.length));
       }
     }
-  }, [ad, percentage]);
+    if (clock === 0) setAd(false);
+  }, [ad, percentage, clock]);
   return ad !== false && (
     <Container>
       <CloseAd onClick={() => setAd(false)}>X</CloseAd>
@@ -59,6 +63,12 @@ const Ads = () => {
     </Container>
   );
 };
+
+const Ads = () => {
+  const { userHasId } = useContext(userContext);
+  return userHasId && <AdsManager />;
+}
+
 
 Ads.propTypes = {};
 

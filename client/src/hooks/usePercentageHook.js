@@ -7,7 +7,7 @@ import { userContext } from '../context/UserProvider';
 
 const usePercentageHook = () => {
   const [percentage, setPercentage] = useState(0);
-  const [started, setStarted] = useState(0);
+  const [started, setStarted] = useState(false);
   const [response, start, stop] = useApiIntervalHook(api.getPercentage);
   const { userHasId } = useContext(userContext)
 
