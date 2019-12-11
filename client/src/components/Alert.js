@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 // import PropTypes from 'prop-types';
 
@@ -37,6 +37,12 @@ const Alert = () => {
     if (clock === 0) setAlert(false);
   }, [clock, hasShownAlert, percentage]);
 
+  const buttonRef = useRef();
+
+  useEffect(() => {
+    if (alert && buttonRef.current) buttonRef.current.focus();
+  }, [alert]);
+
   return (
     <Modal visible={alert}>
       <Container>
@@ -45,7 +51,7 @@ const Alert = () => {
           Los contenidos que se van a mostrar a continuación pueden incomodar a
           algunas personas. Se recomienda discreción.
         </ModalDescription>
-        <Button type="red" onClick={() => setAlert(false)}>
+        <Button ref={buttonRef} type="red" onClick={() => setAlert(false)}>
           Entendido
         </Button>
       </Container>
