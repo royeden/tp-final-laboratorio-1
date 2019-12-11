@@ -9,11 +9,7 @@ const { Provider } = clockContext;
 
 const ClockProvider = ({ children }) => {
   const clock = useClockHook();
-  return (
-    <Provider value={{ clock }}>
-      {children}
-    </Provider>
-  );
-}
+  return <Provider value={{ clock }}>{children}</Provider>;
+};
 
 export default ClockProvider;

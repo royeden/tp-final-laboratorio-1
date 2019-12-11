@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import api from '../api';
 
@@ -6,7 +6,7 @@ const useUserHook = () => {
   const [userHasId, setUserHasId] = useState(!!localStorage.getItem('user'));
   const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState(localStorage.getItem('user'));
-  
+
   const handleUserSubmit = value => {
     setUser(value);
   };
@@ -26,7 +26,7 @@ const useUserHook = () => {
               setUserLoading(false);
               setUser(realUser);
             }
-          })
+          });
         });
     }
   }, [userHasId, userLoading, user]);
@@ -43,7 +43,7 @@ const useUserHook = () => {
     resetUser,
     userHasId,
     userLoading
-  }
-}
+  };
+};
 
 export default useUserHook;

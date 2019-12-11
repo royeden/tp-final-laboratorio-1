@@ -44,12 +44,7 @@ const api = {
           method: 'GET'
         }),
   getReset: shouldUseMock
-    ? mockRequest(
-        '/reset',
-        () => ({ reset: true }),
-        true,
-        500
-      )
+    ? mockRequest('/reset', () => ({ reset: true }), true, 500)
     : () =>
         fetch('/reset', {
           method: 'GET'

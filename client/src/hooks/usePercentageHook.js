@@ -9,7 +9,7 @@ const usePercentageHook = () => {
   const [percentage, setPercentage] = useState(0);
   const [started, setStarted] = useState(false);
   const [response, start, stop] = useApiIntervalHook(api.getPercentage);
-  const { userHasId } = useContext(userContext)
+  const { userHasId } = useContext(userContext);
 
   if (response)
     response.then(({ percentage: p, started: s }) => {
@@ -19,7 +19,7 @@ const usePercentageHook = () => {
 
   useEffect(() => {
     if (userHasId) start();
-    else stop()
+    else stop();
   }, [start, stop, userHasId]);
 
   return [percentage, started];

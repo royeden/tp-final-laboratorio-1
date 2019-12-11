@@ -68,7 +68,7 @@ const FinalModalContainer = () => {
 
   useEffect(() => {
     return stop;
-  }, [stop])
+  }, [stop]);
 
   const handleRequest = ep => () =>
     ep(user).then(res => res.ok && setSentFinalModal(true));

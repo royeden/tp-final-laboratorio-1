@@ -10,19 +10,22 @@ const useApiIntervalHook = (request, interval = 1000) => {
   const stop = () => setRunning(false);
 
   useEffect(() => {
-    return stop
-  }, [])
+    return stop;
+  }, []);
 
-  useIntervalHook(() => {
-    const tepmRequest = async () => {
-      const tempRes = await request();
-      const res = await tempRes.json();
-      return res;
-    };
-    setResponse(tepmRequest());
-  }, running ? interval : null)
+  useIntervalHook(
+    () => {
+      const tepmRequest = async () => {
+        const tempRes = await request();
+        const res = await tempRes.json();
+        return res;
+      };
+      setResponse(tepmRequest());
+    },
+    running ? interval : null
+  );
 
   return [response, start, stop, running];
-}
+};
 
 export default useApiIntervalHook;

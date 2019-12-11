@@ -8,11 +8,7 @@ userContext.displayName = 'UserContext';
 const { Provider } = userContext;
 
 const UserProvider = ({ children }) => {
-  return (
-    <Provider value={{...useUserHook()}}>
-      {children}
-    </Provider>
-  );
-}
+  return <Provider value={{ ...useUserHook() }}>{children}</Provider>;
+};
 
 export default UserProvider;
