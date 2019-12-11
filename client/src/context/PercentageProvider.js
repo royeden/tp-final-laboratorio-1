@@ -8,9 +8,9 @@ percentageContext.displayName = 'PercentageContext';
 const { Provider } = percentageContext;
 
 const PercentageProvider = ({ children }) => {
-  const percentage = usePercentageHook();
+  const [percentage, started] = usePercentageHook();
   return (
-    <Provider value={{ percentage }}>
+    <Provider value={{ percentage, started }}>
       {children}
     </Provider>
   );

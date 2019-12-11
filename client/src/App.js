@@ -1,22 +1,21 @@
 import React from 'react';
 
+import ContextProvider from './context/';
 import Ads from './scenes/Ads';
-import PercentageProvider from './context/PercentageProvider';
 import UI from './scenes/UI';
 import UserModal from './scenes/UserModal';
-import UserProvider from './context/UserProvider';
-
+import Alert from './components/Alert';
+import FinalModal from './components/FinalModal';
 
 const App = () => {
-
   return (
-    <UserProvider>
-      <PercentageProvider>
-        <UserModal />
-        <UI />
-        <Ads />
-      </PercentageProvider>
-    </UserProvider>
+    <ContextProvider>
+      <UserModal />
+      <UI />
+      <Ads />
+      <Alert />
+      <FinalModal />
+    </ContextProvider>
   );
 };
 

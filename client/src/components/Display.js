@@ -7,11 +7,23 @@ import { userContext } from '../context/UserProvider';
 import { percentageContext } from '../context/PercentageProvider';
 
 import Button from './Button';
+import Loader from './Loader';
 
 const Container = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+`;
+
+const LoaderContainer = styled.div`
+  display: flex;
+  flex: 1;
+  margin-top: 2rem;
+`;
+
+const LoaderText = styled.h1`
+  padding: 0 1rem;
+  text-align: center;
 `;
 
 const RectContainer = styled.div`
@@ -57,12 +69,12 @@ const ButtonsContainer = styled.div`
 `;
 
 const Display = () => {
-  const { percentage } = useContext(percentageContext);
+  const { percentage, started } = useContext(percentageContext);
   const { user } = useContext(userContext);
 
   const decrease = () => api.postPercentageDecrease(user);
   const increase = () => api.postPercentageIncrease(user);
-  return (
+  return started ? (
     <Container>
       <h3>Nivel de violencia: {percentage}%</h3>
       <LabelsContainer>
@@ -81,6 +93,13 @@ const Display = () => {
           Aumentar
         </Button>
       </ButtonsContainer>
+    </Container>
+  ) : (
+    <Container>
+      <LoaderText>Esperando a todxs lxs participantes</LoaderText>
+      <LoaderContainer>
+        <Loader amount={3} size={2} />
+      </LoaderContainer>
     </Container>
   );
 };

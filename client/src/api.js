@@ -1,6 +1,7 @@
 const mocks = {
-  time: 180,
-  percentage: 0
+  time: 180000,
+  percentage: 0,
+  started: false
 };
 const shouldUseMock = true;
 // const shouldUseMock = process.env.NODE_ENV === 'development';
@@ -35,7 +36,7 @@ const api = {
   getPercentage: shouldUseMock
     ? mockRequest(
         '/percentage',
-        () => ({ percentage: mocks.percentage }),
+        () => ({ percentage: mocks.percentage, started: mocks.started }),
         true,
         500
       )
@@ -46,7 +47,8 @@ const api = {
     ? mockRequest(
         '/time',
         () => {
-          if (mocks.time > 0) --mocks.time;
+          if (mocks.time > 0) mocks.time -= 1000;
+          if (!mocks.started) mocks.started = true;
           return { time: mocks.time };
         },
         true,

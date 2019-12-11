@@ -8,7 +8,7 @@ const UserModal = () => {
   const { handleUserSubmit, userHasId, userLoading } = useContext(userContext);
 
   return (
-    <Modal dismissable={false} visible={!userHasId}>
+    <Modal visible={!userHasId}>
       <UserForm loading={userLoading} onSubmit={handleUserSubmit} />
     </Modal>
   )
