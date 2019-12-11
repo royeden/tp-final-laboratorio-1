@@ -1,6 +1,5 @@
 const mocks = {
-  // time: 180000,
-  time: 10000,
+  time: 180000,
   percentage: 0,
   started: false
 };
@@ -42,6 +41,17 @@ const api = {
       )
     : () =>
         fetch('/percentage', {
+          method: 'GET'
+        }),
+  getReset: shouldUseMock
+    ? mockRequest(
+        '/reset',
+        () => ({ reset: true }),
+        true,
+        500
+      )
+    : () =>
+        fetch('/reset', {
           method: 'GET'
         }),
   getTime: shouldUseMock

@@ -121,12 +121,6 @@ module.exports = () => {
     callback(req, res, logWithUser);
   };
 
-  app.get('/time', (_, res) => {
-    res.json({
-      time
-    });
-  });
-
   app.get('/id', (_, res) => {
     res.json({
       id: user_id
@@ -134,6 +128,25 @@ module.exports = () => {
     --usersToRegister;
     ++user_id;
     if (!usersToRegister) start();
+  });
+
+  app.get('/percentage', (_, res) => {
+    res.json({
+      started,
+      percentage
+    });
+  });
+  
+  app.get('/reset', (_, res) => {
+    res.json({
+      reset: !started
+    });
+  });
+
+  app.get('/time', (_, res) => {
+    res.json({
+      time
+    });
   });
 
   app.post(
@@ -146,13 +159,6 @@ module.exports = () => {
       }
     )
   );
-
-  app.get('/percentage', (_, res) => {
-    res.json({
-      started,
-      percentage
-    });
-  });
 
   app.post(
     '/increase',
@@ -204,6 +210,8 @@ module.exports = () => {
           strings.boundaries.fallback
         }\n${strings.percentageIsAt(percentage)}`}`,
       (_, res, log) => {
+        ++usersToRegister;
+        if (usersToRegister === amount) reset();
         append(likePath(), log);
         res.send(log);
       }
@@ -218,6 +226,8 @@ module.exports = () => {
           strings.boundaries.fallback
         }\n${strings.percentageIsAt(percentage)}`}`,
       (_, res, log) => {
+        ++usersToRegister;
+        if (usersToRegister === amount) reset();
         append(dislikePath(), log);
         res.send(log);
       }
