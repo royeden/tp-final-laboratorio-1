@@ -45,7 +45,7 @@ const AdsManager = () => {
   const { clock } = useContext(clockContext);
   const { percentage } = useContext(percentageContext);
   useEffect(() => {
-    if (percentage < 0 && !ad) {
+    if (percentage > -100 && percentage < 0 && !ad) {
       const adChance = Math.floor(Math.random() * 150);
       const chance = mapValue(percentage, -100, -1, 10, 100);
       console.log(adChance, chance);
@@ -53,7 +53,9 @@ const AdsManager = () => {
         setAd(Math.floor(Math.random() * images.length));
       }
     }
-    if (clock === 0) setAd(false);
+    if (clock === 0 || percentage === -100) {
+      setAd(false);
+    }
   }, [ad, percentage, clock]);
   return (
     ad !== false && (

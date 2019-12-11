@@ -5,7 +5,7 @@ const amount = 1; // Amount of people in the experience
 const language = 'es';
 
 const patch = {
-  local_ip: '0.7',
+  local_ip: '1.104',
   regex: /(GetRequest get(\w+) = new GetRequest\("([\w.:/]+)"\);\n)+/,
   replacement: url => `GetRequest getTime = new GetRequest("${url}/time");\nGetRequest getPercentage = new GetRequest("${url}/percentage");\n`
 };
