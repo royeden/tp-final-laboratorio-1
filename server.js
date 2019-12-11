@@ -7,10 +7,6 @@ const serveStatic = require('serve-static')
 const { config } = require('./config');
 
 module.exports = () => {
-  require('dotenv').config();
-
-  const { PASSWORD } = process.env;
-
   const { language, port, strings: configStrings, timeout, values } = config;
 
   const strings = configStrings[language];
