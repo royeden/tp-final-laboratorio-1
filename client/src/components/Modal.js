@@ -35,7 +35,7 @@ const ModalVisibility = styled.div`
 `;
 
 const ModalBody = styled.div`
-  background-color: #FFF;
+  background-color: #fff;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   display: flex;
@@ -46,16 +46,17 @@ const ModalBody = styled.div`
   padding: 2rem 1rem;
   pointer-events: ${({ visible }) => (visible ? 'auto' : 'none')};
   width: 90%;
-`
+`;
 
 const Modal = ({ children, dismissable, onClose, visible }) => {
   return (
     <>
-      <ModalBackdrop onClick={dismissable ? onClose : undefined} visible={visible} />
+      <ModalBackdrop
+        onClick={dismissable ? onClose : undefined}
+        visible={visible}
+      />
       <ModalVisibility visible={visible}>
-        <ModalBody visible={visible}>
-          {visible && children}
-        </ModalBody>
+        <ModalBody visible={visible}>{visible && children}</ModalBody>
       </ModalVisibility>
     </>
   );

@@ -34,7 +34,6 @@ const CloseAd = styled.button`
   width: 4rem;
 `;
 
-
 const Ad = styled.img`
   height: 100vh;
   width: 100vw;
@@ -56,19 +55,20 @@ const AdsManager = () => {
     }
     if (clock === 0) setAd(false);
   }, [ad, percentage, clock]);
-  return ad !== false && (
-    <Container>
-      <CloseAd onClick={() => setAd(false)}>X</CloseAd>
-      <Ad src={images[ad]} />
-    </Container>
+  return (
+    ad !== false && (
+      <Container>
+        <CloseAd onClick={() => setAd(false)}>X</CloseAd>
+        <Ad src={images[ad]} />
+      </Container>
+    )
   );
 };
 
 const Ads = () => {
   const { userHasId } = useContext(userContext);
   return userHasId && <AdsManager />;
-}
-
+};
 
 Ads.propTypes = {};
 

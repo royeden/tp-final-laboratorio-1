@@ -9,11 +9,7 @@ const { Provider } = percentageContext;
 
 const PercentageProvider = ({ children }) => {
   const [percentage, started] = usePercentageHook();
-  return (
-    <Provider value={{ percentage, started }}>
-      {children}
-    </Provider>
-  );
-}
+  return <Provider value={{ percentage, started }}>{children}</Provider>;
+};
 
 export default PercentageProvider;

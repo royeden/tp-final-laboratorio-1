@@ -11,7 +11,7 @@ const UserModal = () => {
     <Modal visible={!userHasId}>
       <UserForm loading={userLoading} onSubmit={handleUserSubmit} />
     </Modal>
-  )
-}
+  );
+};
 
 export default UserModal;

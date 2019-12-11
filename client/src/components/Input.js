@@ -37,7 +37,10 @@ const Error = styled.span`
   color: ${errorColor};
 `;
 
-const Input = ({ error, onBlur, onFocus, onSubmit, title, value, ...props }, ref) => {
+const Input = (
+  { error, onBlur, onFocus, onSubmit, title, value, ...props },
+  ref
+) => {
   const input = useRef();
   const [focused, setFocused] = useState(false);
 
@@ -62,19 +65,15 @@ const Input = ({ error, onBlur, onFocus, onSubmit, title, value, ...props }, ref
   };
 
   const handleKeyPress = ({ key }) => {
-    if (key === "Enter") {
+    if (key === 'Enter') {
       if (error) input.current.blur();
-      else if(onSubmit) onSubmit(value)
+      else if (onSubmit) onSubmit(value);
     }
   };
 
   return (
     <Container>
-      <InputContainer
-        error={error}
-        onClick={focusInput}
-        focused={focused}
-      >
+      <InputContainer error={error} onClick={focusInput} focused={focused}>
         <>
           <Label htmlFor={title}>{title}</Label>
           <StyledInput

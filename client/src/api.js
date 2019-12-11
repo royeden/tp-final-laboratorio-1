@@ -31,7 +31,7 @@ const api = {
     ? mockRequest('/id', { id: 0 })
     : () =>
         fetch('/id', {
-          method: 'GET',
+          method: 'GET'
         }),
   getPercentage: shouldUseMock
     ? mockRequest(
@@ -40,9 +40,16 @@ const api = {
         true,
         500
       )
-    : () => fetch('/percentage', {
-        method: 'GET'
-      }),
+    : () =>
+        fetch('/percentage', {
+          method: 'GET'
+        }),
+  getReset: shouldUseMock
+    ? mockRequest('/reset', () => ({ reset: true }), true, 500)
+    : () =>
+        fetch('/reset', {
+          method: 'GET'
+        }),
   getTime: shouldUseMock
     ? mockRequest(
         '/time',
@@ -54,9 +61,46 @@ const api = {
         true,
         500
       )
-    : () => fetch('/time', {
-        method: 'GET'
-      }),
+    : () =>
+        fetch('/time', {
+          method: 'GET'
+        }),
+  postLike: shouldUseMock
+    ? mockRequest(
+        '/like',
+        user => {
+          return {
+            body: `${user} liked the experience!`,
+            ok: true
+          };
+        },
+        false
+      )
+    : user =>
+        fetch('/like', {
+          method: 'POST',
+          ...jsonRequestBody({
+            user
+          })
+        }),
+  postDislike: shouldUseMock
+    ? mockRequest(
+        '/dislike',
+        user => {
+          return {
+            body: `${user} disliked the experience!`,
+            ok: true
+          };
+        },
+        false
+      )
+    : user =>
+        fetch('/dislike', {
+          method: 'POST',
+          ...jsonRequestBody({
+            user
+          })
+        }),
   postPercentageDecrease: shouldUseMock
     ? mockRequest(
         '/decrease',

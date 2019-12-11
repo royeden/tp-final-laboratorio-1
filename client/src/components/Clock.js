@@ -6,13 +6,9 @@ import { clockContext } from '../context/ClockProvider';
 const Clock = () => {
   const { clock } = useContext(clockContext);
 
-  return (
-    <h3>{clock}s</h3>  
-  );
+  return <h3>{clock}s</h3>;
 };
 
-Clock.propTypes = {
-  
-};
+Clock.propTypes = {};
 
 export default Clock;
