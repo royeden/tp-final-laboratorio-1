@@ -13,10 +13,10 @@ module.exports = () => {
 
   const app = express();
 
+  let id = 0;
   let started;
   let usersToRegister;
   let percentage;
-  let user_id;
   // let session_id = 0;
   let time;
   let timeInterval;
@@ -92,7 +92,6 @@ module.exports = () => {
     started = false;
     usersToRegister = amount;
     percentage = 0;
-    user_id = 0;
     time = timeout;
     timeInterval = null;
   }
@@ -104,7 +103,7 @@ module.exports = () => {
     }, 1000);
     setTimeout(() => {
       clearInterval(timeInterval);
-    }, timeout);
+    }, timeout + 1000);
   }
 
   reset();
@@ -123,10 +122,10 @@ module.exports = () => {
 
   app.get('/id', (_, res) => {
     res.json({
-      id: user_id
+      id
     });
+    ++id;
     --usersToRegister;
-    ++user_id;
     if (!usersToRegister) start();
   });
 
@@ -202,7 +201,7 @@ module.exports = () => {
     )
   );
 
-  app.put(
+  app.post(
     '/like',
     handleUpdateRequest(
       username =>
@@ -218,7 +217,7 @@ module.exports = () => {
     )
   );
 
-  app.put(
+  app.post(
     '/dislike',
     handleUpdateRequest(
       username =>
