@@ -17,7 +17,7 @@ const useClockHook = () => {
     else stop();
   }, [start, stop, userHasId]);
 
-  return clock > 0 ? clock : 0;
+  return clock > 0 ? clock / 1000 : 0;
 };
 
 export default useClockHook;

@@ -1,5 +1,5 @@
 const mocks = {
-  time: 180,
+  time: 180000,
   percentage: 0,
   started: false
 };
@@ -46,7 +46,7 @@ const api = {
     ? mockRequest(
         '/time',
         () => {
-          if (mocks.time > 0) --mocks.time;
+          if (mocks.time > 0) mocks.time -= 1000;
           if (!mocks.started) mocks.started = true;
           return { time: mocks.time };
         },
