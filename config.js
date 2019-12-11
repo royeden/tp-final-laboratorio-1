@@ -1,5 +1,6 @@
 const port = 3000;
 const timeout = 180000;
+const amount = 4; // Amount of people in the experience
 
 const language = 'es';
 
@@ -9,32 +10,11 @@ const patch = {
   replacement: url => `GetRequest getTime = new GetRequest("${url}/time");\nGetRequest getPercentage = new GetRequest("${url}/update");\n`
 };
 
-const html = {
-  images: [...Array(12)].map((_, i) => `images/${i + 1}.png`),
-  thresholds: [0, 10, 7, 3, 1]
-};
-
 const en = {
   boundaries: {
     max: ', but percentage is at max!',
     min: ', but percentage is at min!',
     fallback: '!'
-  },
-  html: {
-    adminPrompt: 'Enter the password:',
-    decrease: 'Decrease',
-    description: 'Violence meter:',
-    dislike: 'Dislike',
-    increase: 'Increase',
-    final_dislike: 'I liked it!',
-    final_like: "I didn't like it",
-    like: 'Like',
-    loading: 'Loading...',
-    prompt: 'Enter your desired name (letters, number and underscores are valid):',
-    reset: 'Reset',
-    response: 'Violence level:',
-    title: 'Control panel',
-    wrongPassword: 'Wrong password!'
   },
   initialMessage: port => `Initiated server in port ${port}!`,
   logSaved: 'Updated log!',
@@ -59,22 +39,6 @@ const es = {
     min: ', pero el porcentaje está al mínimo!',
     fallback: '!'
   },
-  html: {
-    adminPrompt: 'Ingresá la contraseña:',
-    decrease: 'Disminuir',
-    description: 'Medidor de violencia:',
-    dislike: 'No me gusta',
-    increase: 'Aumentar',
-    final_dislike: '¡No me gustó!',
-    final_like: '¡Me gustó!',
-    like: 'Me gusta',
-    loading: 'Cargando...',
-    prompt: 'Ingresa el nombre que quieras usar (son válidas letras, números y guiones bajos):',
-    reset: 'Reiniciar',
-    response: 'Nivel de violencia:',
-    title: 'Panel de control',
-    wrongPassword: '¡Contraseña incorrecta!'
-  },
   initialMessage: port => `¡Servidor iniciado en el puerto ${port}!`,
   logSaved: '¡Datos actualizados!',
   percentageIsAt: percentage => `El porcentaje está al ${percentage}%`,
@@ -94,6 +58,7 @@ const es = {
 };
 
 exports.config = {
+  amount,
   language,
   patch,
   port,
@@ -102,7 +67,5 @@ exports.config = {
     es
   },
   timeout,
-  values: {
-    html
-  }
+
 };

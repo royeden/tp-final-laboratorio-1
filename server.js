@@ -7,18 +7,19 @@ const serveStatic = require('serve-static')
 const { config } = require('./config');
 
 module.exports = () => {
-  const { language, port, strings: configStrings, timeout, values } = config;
+  const { amount, language, port, strings: configStrings, timeout } = config;
 
   const strings = configStrings[language];
 
   const app = express();
 
-  let percentage = 0;
-  let user_id = 0;
+  let started;
+  let usersToRegister;
+  let percentage;
+  let user_id;
   // let session_id = 0;
-  let time = 180;
-  let reset = false;
-  let debugActive = false;
+  let time;
+  let timeInterval;
 
   const fullLogPath = `./logs/log.txt`;
   // const logPath = () => `./logs/${session_id}/log.txt`;
@@ -33,8 +34,6 @@ module.exports = () => {
   const decreasePath = () => `./logs/decrease.txt`;
   const dislikePath = () => `./logs/dislike.txt`;
   const likePath = () => `./logs/like.txt`;
-  const finalDislikePath = () => `./logs/final_dislike.txt`;
-  const finalLikePath = () => `./logs/final_like.txt`;
   const usersPath = `./logs/users.txt`;
 
   const fsCallback = path => error => {
@@ -63,6 +62,7 @@ module.exports = () => {
     fullLogPath,
     `${strings.initialMessage(port)}\n${strings.percentageIsAt(percentage)}\n`
   );
+
   write(
     usersPath,
     `${strings.initialMessage(port)}\n${strings.percentageIsAt(percentage)}\n`
@@ -75,9 +75,7 @@ module.exports = () => {
       increasePath,
       decreasePath,
       dislikePath,
-      likePath,
-      finalDislikePath,
-      finalLikePath
+      likePath
     ].forEach(path =>
       write(
         path(),
@@ -90,26 +88,29 @@ module.exports = () => {
 
   init();
 
+  const reset = () => {
+    started = false;
+    usersToRegister = amount;
+    percentage = 0;
+    user_id = 0;
+    time = timeout;
+    timeInterval = null;
+  }
+
+  const start = () => {
+    started = true;
+    timeInterval = setInterval(() => {
+      if (time > 0) time -= 1000;
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(timeInterval);
+    }, timeout);
+  }
+
+  reset();
+
   app.use(bodyParser.json());
-  app.use(express.static('static'));
-  app.set('view engine', 'ejs');
   app.use(serveStatic('client/build/'));
-
-  // app.get('/', function(req, res) {
-  //   res.render('index', { ...strings.html, timeout: 0, values: values.html });
-  // });
-
-  app.get('/timeout', function(req, res) {
-    res.render('index', { ...strings.html, timeout, values: values.html });
-  });
-
-  app.get('/admin', function(req, res) {
-    res.render('admin', { ...strings.html, timeout: 0, values: values.html });
-  });
-
-  app.get('/debug', function(req, res) {
-    res.render('debug', { ...strings.html, timeout: 0, values: values.html });
-  });
 
   const handleUpdateRequest = (log, callback) => (req, res) => {
     const user = req.body.user;
@@ -120,63 +121,19 @@ module.exports = () => {
     callback(req, res, logWithUser);
   };
 
-  app.get('/time', (req, res) => {
+  app.get('/time', (_, res) => {
     res.json({
       time
     });
-  });
-
-  app.put('/time', (req, res) => {
-    const { timeout } = req.body;
-    time = timeout;
-    res.send(`Received ${time}!`);
-  });
-
-  app.post('/password', (req, res) => {
-    const password = req.body.password;
-    res.json({
-      correct: password === PASSWORD
-    });
-  });
-
-  app.get('/reset', (req, res) => {
-    res.json({
-      reset
-    });
-    reset = false;
-  });
-
-  app.post('/debug', (req, res) => {
-    debugActive = !req.body.debugMode;
-    if (debugActive) {
-      time = 1000;
-    } else {
-      time = 0;
-    }
-    res.json({ debugActive });
-  });
-
-  app.post('/reset', (req, res) => {
-    const password = req.body.password;
-    if (password === PASSWORD && time === 0 && !reset) {
-      percentage = 0;
-      time = null;
-      append(
-        fullLogPath,
-        `\n\n===\n\nReset\n${strings.percentageIsAt(percentage)}\n`
-      );
-      reset = true;
-      // session_id += 1;
-      init();
-    }
-    res.send('Reset');
   });
 
   app.get('/id', (_, res) => {
     res.json({
       id: user_id
     });
+    --usersToRegister;
     ++user_id;
+    if (!usersToRegister) start();
   });
 
   app.post(
@@ -192,6 +149,7 @@ module.exports = () => {
 
   app.get('/percentage', (_, res) => {
     res.json({
+      started,
       percentage
     });
   });
@@ -261,34 +219,6 @@ module.exports = () => {
         }\n${strings.percentageIsAt(percentage)}`}`,
       (_, res, log) => {
         append(dislikePath(), log);
-        res.send(log);
-      }
-    )
-  );
-
-  app.put(
-    '/final_like',
-    handleUpdateRequest(
-      username =>
-        `${strings.receivedLike(strings.types.final_like, username)}${`${
-          strings.boundaries.fallback
-        }\n${strings.percentageIsAt(percentage)}`}`,
-      (_, res, log) => {
-        append(finalLikePath(), log);
-        res.send(log);
-      }
-    )
-  );
-
-  app.put(
-    '/final_dislike',
-    handleUpdateRequest(
-      username =>
-        `${strings.receivedLike(strings.types.final_dislike, username)}${`${
-          strings.boundaries.fallback
-        }\n${strings.percentageIsAt(percentage)}`}`,
-      (_, res, log) => {
-        append(finalDislikePath(), log);
         res.send(log);
       }
     )
